@@ -37,24 +37,22 @@ li:first-child .pos{color:var(--gold)}
   <input type="search" id="q" placeholder="Search levels" aria-label="Search levels">
   <ol id="list"></ol>
 </div>
+<script src="lists.js"></script>
 <script>
-/* ===== EDIT THIS LIST =====
-   Rank = order in the list. The first level is #1.
-   To make a level #1, cut its whole block and paste it at the very top.
-   To add a level, copy a block and change the text.
-
-   name     = level name
+/* ===== LEVEL DETAILS (set once, never needs moving) =====
+   The ranking order is in lists.js. Here you only add info for each level.
+   The name must match the name in lists.js exactly.
    creator  = who made it
-   link     = where to play/download it (optional)
-   showcase = showcase video link (YouTube works best)
-   thumb    = thumbnail image (optional). Use a link, or a file in your repo
-              like "thumbs/level1.jpg". If left empty and the showcase is a
-              YouTube link, the thumbnail is taken from the video automatically. */
-const LEVELS = [
-  { name:"The Samsara",   creator:"Pegasi", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", thumb:"thumbs/maxresdefault.jpg" },
-  { name:"The Rock",   creator:"Theo5970", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", thumb:"thumbs/thumb1.jpg" },
-];
+   showcase = showcase video link (YouTube gives an automatic thumbnail)
+   link     = play/download link (optional)
+   thumb    = own thumbnail, e.g. "thumbs/level1.jpg" (optional) */
+const INFO = {
+  "The Samsara": { creator:"Pegasi", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", thumb:"thumbs/maxresdefault.jpg" },
+  "The Rock":    { creator:"Theo5970", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", thumb:"thumbs/thumb1.jpg" },
+};
 /* ===== Nothing below needs editing ===== */
+const LEVELS = LIST.split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
+  .map(name => ({ name, creator:"", showcase:"", link:"", thumb:"", ...(INFO[name] || {}) }));
 const list = document.getElementById("list"), q = document.getElementById("q");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const isUrl = u => /^https?:\/\//i.test(u || "");
