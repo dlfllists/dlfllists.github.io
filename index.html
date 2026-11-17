@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dancing Line Fanmade Levels Ranked</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ebe8ff;--surface:#fff;--ink:#1d1a4a;--muted:#6a679a;--line:#d6d1f5;--pink:#e2407f;--gold:#f2b632}
+@media (prefers-color-scheme:dark){:root{--bg:#171538;--surface:#221f55;--ink:#f0eeff;--muted:#a9a5dd;--line:#38347a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Figtree,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:40px 18px 60px}
+h1{font:800 clamp(26px,6vw,40px)/1.1 Unbounded,sans-serif;margin:0 0 8px}
+p.sub{margin:0 0 20px;color:var(--muted)}
+input{width:100%;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;margin-bottom:16px}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+li{display:flex;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px 10px 16px}
+.pos{font:800 22px Unbounded,sans-serif;min-width:2.2ch;color:var(--muted)}
+li:first-child .pos{color:var(--gold)}
+.thumb{flex:none;width:128px;aspect-ratio:16/9;border-radius:8px;background:var(--line);object-fit:cover;display:block}
+.thumb.none{display:grid;place-items:center;color:var(--muted);font-size:12px}
+.info{min-width:0;flex:1}
+.name{font-weight:700;margin:0;overflow-wrap:anywhere}
+.by{color:var(--muted);font-size:14px}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.links a{font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;text-decoration:none}
+.links a.show{background:var(--pink);border-color:var(--pink);color:#fff}
+@media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dancing Line fanmade levels ranked</h1>
+  <p class="sub">Hardest at the top.</p>
+  <input type="search" id="q" placeholder="Search levels" aria-label="Search levels">
+  <ol id="list"></ol>
+</div>
+<script>
+/* ===== EDIT THIS LIST =====
+   Rank = order in the list. The first level is #1.
+   To make a level #1, cut its whole block and paste it at the very top.
+   To add a level, copy a block and change the text.
+
+   name     = level name
+   creator  = who made it
+   link     = where to play/download it (optional)
+   showcase = showcase video link (YouTube works best)
+   thumb    = thumbnail image (optional). Use a link, or a file in your repo
+              like "thumbs/level1.jpg". If left empty and the showcase is a
+              YouTube link, the thumbnail is taken from the video automatically. */
+const LEVELS = [
+  { name:"Example Level One",   creator:"Creator A", link:"https://example.com", showcase:"https://www.youtube.com/watch?v=dQw4w9WgXcQ", thumb:"" },
+  { name:"Example Level Two",   creator:"Creator B", link:"https://example.com", showcase:"https://youtu.be/dQw4w9WgXcQ", thumb:"" },
+  { name:"Example Level Three", creator:"Creator C", link:"",                    showcase:"https://example.com/video", thumb:"thumbs/level3.jpg" },
+  { name:"Example Level Four",  creator:"Creator D", link:"https://example.com", showcase:"", thumb:"" },
+];
+/* ===== Nothing below needs editing ===== */
+const list = document.getElementById("list"), q = document.getElementById("q");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const isUrl = u => /^https?:\/\//i.test(u || "");
+function ytId(u){
+  const m = String(u || "").match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+  return m ? m[1] : "";
+}
+function thumbOf(l){
+  if (l.thumb) return l.thumb;
+  const id = ytId(l.showcase);
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
+}
+function render(){
+  const t = q.value.trim().toLowerCase();
+  list.innerHTML = LEVELS.map((l,i) => ({l,i}))
+    .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t))
+    .map(({l,i}) => {
+      const th = thumbOf(l);
+      const img = th ? `<img class="thumb" src="${esc(th)}" alt="Thumbnail of ${esc(l.name)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;thumb none&quot;>No thumbnail</div>'">`
+                     : `<div class="thumb none">No thumbnail</div>`;
+      const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">Showcase</a>` : "")
+                  + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">Play</a>` : "");
+      return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">by ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
+    }).join("");
+}
+q.addEventListener("input", render);
+render();
+</script>
+</body>
+</html>
