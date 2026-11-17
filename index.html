@@ -30,6 +30,10 @@ li:first-child .pos{color:var(--gold)}
 .info{min-width:0;flex:1}
 .name{font-weight:700;margin:0;overflow-wrap:anywhere}
 .by{color:var(--muted);font-size:14px}
+.tabs{display:flex;gap:8px;margin:0 0 16px}
+.tabs button{flex:1;font:inherit;font-weight:700;color:var(--muted);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
+.tabs button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
+.tabs button:active{transform:translateY(3px);box-shadow:0 0 0 transparent}
 .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;padding-bottom:3px}
 .links a{font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;text-decoration:none}
 .links a.show{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -40,6 +44,9 @@ li:first-child .pos{color:var(--gold)}
 .disc i{position:relative;display:block;width:100%;height:100%;border-radius:50%;box-shadow:0 3px 10px rgba(0,0,0,.28);animation:spin 2.2s linear infinite;
   background:radial-gradient(circle,var(--surface) 0 8%,rgba(0,0,0,.18) 8% 10%,var(--accent) 10% 30%,transparent 30%),
   conic-gradient(#eceaf8,#9fb4ff,#f6c8ee,#eceaf8,#a8f0d8,#fff1b0,#eceaf8,#b9a8ff,#eceaf8)}
+.spectro{flex:1 1 100%;height:0;margin-top:-14px;overflow:hidden;opacity:0;pointer-events:none;transition:height .35s ease,margin-top .35s ease,opacity .3s}
+.spectro.in{height:64px;margin-top:0;opacity:1}
+.spectro canvas{display:block;width:100%;height:64px}
 .disc-art{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover}
 .disc-label{position:absolute;left:27%;top:27%;width:46%;height:46%;border-radius:50%;object-fit:cover;background:var(--line);box-shadow:0 0 0 2px rgba(0,0,0,.4)}
 .disc i b{position:absolute;left:46%;top:46%;width:8%;height:8%;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px rgba(0,0,0,.45)}
@@ -58,6 +65,11 @@ li.playing .info{padding-right:96px}
   <div class="bar">
     <label><span data-t="language">Language</span>
       <select id="lang"><option value="en">English</option><option value="vi">Tiếng Việt</option></select></label>
+    <label><span data-t="viz">Preview style</span>
+      <select id="viz">
+        <option value="disc" data-t="vizDisc">Disc</option>
+        <option value="spectro" data-t="vizSpectro">Spectrogram</option>
+      </select></label>
     <label><span data-t="theme">Theme</span>
       <select id="theme">
         <option value="amethyst" data-t="amethyst">Amethyst</option>
@@ -67,11 +79,16 @@ li.playing .info{padding-right:96px}
       </select></label>
   </div>
   <h1 data-t="title">Dancing Line Fanmade Level Lists</h1>
-  <p class="sub" data-t="sub">Ranking Dancing Line Levels by difficulty</p>
+  <p class="sub" id="sub">Ranking Dancing Line Levels by difficulty</p>
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" data-tab="levels" data-t="tabLevels" aria-selected="true">Levels</button>
+    <button type="button" role="tab" data-tab="music" data-t="tabMusic" aria-selected="false">Music</button>
+  </div>
   <input type="search" id="q" data-t-ph="search" placeholder="Search levels">
   <ol id="list"></ol>
 </div>
 <script src="lists.js"></script>
+<script src="musiclist.js"></script>
 <script>
 /* ===== LEVEL DETAILS (set once, never needs moving) =====
    The ranking order is in lists.js. Here you only add info for each level.
@@ -101,21 +118,41 @@ const INFO = {
   "The Storm Hard": { creator:"YeZhiYi", showcase:"https://youtu.be/PWMtW0dlQyY?si=m8DAuyV5ipsHrit7", thumb:"thumbs/stormv2.jpg", music:"Music/Storm.mp3", musicStart:93, musicEnd:110 }
 };
 
+/* ===== MUSIC TAB DETAILS =====
+   The ranking order is in musiclist.js. Here you add info for each song.
+   artist = who made the song
+   link   = listen link, YouTube works best (adds a Listen button)
+   thumb  = cover image, e.g. "thumbs/song1.jpg" (optional, YouTube link gives one automatically)
+   music, musicStart, musicEnd = preview clip, same as for levels */
+const MUSIC_INFO = {
+  "The Hollowness":   { artist:"MaxStudio", thumb:"thumbs/hollowness.jpg", music:"Music/hollowness.mp3", musicStart:0, musicEnd:211 },
+  "Rainy Garden":   { artist:"Tatajuo", thumb:"thumbs/RainyGarden.jpg", music:"Music/rainygarden.mp3", musicStart:0, musicEnd:97 },
+};
+
 /* ===== TEXT IN EACH LANGUAGE (add more languages here later) ===== */
 const TEXT = {
   en: { language:"Language", theme:"Theme", amethyst:"Amethyst", default:"Default", dark:"Dark", emerald:"Emerald",
         title:"Dancing Line Fanmade Level Lists", sub:"Ranking Dancing Line Levels by difficulty",
         search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail", music:"Preview", stop:"Stop", noAudio:"Audio not found",
-        thumbAlt:"Thumbnail of", none:"No levels match." },
+        thumbAlt:"Thumbnail of", none:"No levels match.",
+        tabLevels:"Levels", tabMusic:"Music", subMusic:"Ranking songs from Dancing Line fanmade levels", listen:"Listen",
+        viz:"Preview style", vizDisc:"Disc", vizSpectro:"Spectrogram" },
   vi: { language:"Ngôn ngữ", theme:"Giao diện", amethyst:"Thạch anh tím", default:"Mặc định", dark:"Tối", emerald:"Ngọc lục bảo",
         title:"Danh sách Level Dancing Line do fan làm", sub:"Xếp hạng các level Dancing Line theo độ khó",
         search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", noAudio:"Không tìm thấy âm thanh",
-        thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào." }
+        thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào.",
+        tabLevels:"Level", tabMusic:"Nhạc", subMusic:"Xếp hạng các bài nhạc trong level Dancing Line do fan làm", listen:"Nghe",
+        viz:"Kiểu xem trước", vizDisc:"Đĩa", vizSpectro:"Phổ âm thanh" }
 };
 
 /* ===== Nothing below needs editing ===== */
 const LEVELS = LIST.split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
   .map(name => ({ name, creator:"", showcase:"", link:"", thumb:"", ...(INFO[name] || {}) }));
+const MUSICS = (typeof MUSIC_LIST === "undefined" ? "" : MUSIC_LIST).split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
+  .map(name => { const m = MUSIC_INFO[name] || {};
+    return { name, creator:m.artist || "", showcase:m.link || "", link:"", thumb:m.thumb || "", music:m.music, musicStart:m.musicStart, musicEnd:m.musicEnd }; });
+let tab = location.hash === "#music" ? "music" : "levels";
+const DATA = () => tab === "music" ? MUSICS : LEVELS;
 const list = document.getElementById("list"), q = document.getElementById("q");
 const langSel = document.getElementById("lang"), themeSel = document.getElementById("theme");
 const THEMES = ["amethyst","default","dark","emerald"];
@@ -145,14 +182,14 @@ function thumbFail(img){
 function render(){
   stopMusic();
   const t = q.value.trim().toLowerCase(), x = T();
-  const rows = LEVELS.map((l,i) => ({l,i}))
+  const rows = DATA().map((l,i) => ({l,i}))
     .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t));
   if (!rows.length) { list.innerHTML = `<li class="empty">${esc(x.none)}</li>`; return; }
   list.innerHTML = rows.map(({l,i}) => {
     const th = thumbOf(l);
     const img = th ? `<img class="thumb" src="${esc(th)}" alt="${esc(x.thumbAlt)} ${esc(l.name)}" loading="lazy" onerror="thumbFail(this)">`
                    : `<div class="thumb none">${esc(x.noThumb)}</div>`;
-    const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(x.showcase)}</a>` : "")
+    const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(tab === "music" ? x.listen : x.showcase)}</a>` : "")
                 + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">${esc(x.play)}</a>` : "")
                 + (l.music && !ytId(l.music) ? `<button type="button" class="music" data-i="${i}" aria-pressed="false">&#9654; ${esc(x.music)}</button>` : "");
     return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
@@ -160,7 +197,58 @@ function render(){
 }
 const DISC_IMAGE = "disc.png"; // your own disc picture, e.g. "disc.png" (put it in your repo)
 const FADE_IN = 1, FADE_OUT = 1.5; // fade lengths in seconds, change if you like
-let audio = null, curBtn = null, curDisc = null, curLi = null;
+let audio = null, curBtn = null, curDisc = null, curLi = null, curSpec = null, actx = null;
+let viz = store.get("dl-viz") === "spectro" ? "spectro" : "disc";
+const vizSel = document.getElementById("viz");
+function canAnalyse(src){
+  try { return /^https?:$/.test(location.protocol) && new URL(src, location.href).origin === location.origin && !!(window.AudioContext || window.webkitAudioContext); }
+  catch(e) { return false; }
+}
+function startDisc(li, l){
+  const d = document.createElement("div"), art = thumbOf(l);
+  d.className = "disc";
+  d.innerHTML = `<i><img class="disc-art" src="${esc(DISC_IMAGE)}" alt="" onerror="this.style.display='none'">`
+    + (art ? `<img class="disc-label" src="${esc(art)}" alt="" onerror="this.style.display='none'">` : "")
+    + `<b></b></i>`;
+  li.appendChild(d); li.classList.add("playing");
+  curDisc = d;
+  requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add("in")));
+}
+function startSpectro(li, a){
+  const el = document.createElement("div");
+  el.className = "spectro";
+  el.innerHTML = "<canvas></canvas>";
+  li.appendChild(el);
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === "suspended") actx.resume();
+    const src = actx.createMediaElementSource(a), an = actx.createAnalyser();
+    an.fftSize = 256; an.smoothingTimeConstant = 0.78;
+    src.connect(an); an.connect(actx.destination);
+    const cv = el.querySelector("canvas"), dpr = Math.min(2, window.devicePixelRatio || 1);
+    const W = Math.max(40, el.clientWidth), H = 64;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const ctx = cv.getContext("2d"); ctx.scale(dpr, dpr);
+    const color = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#e2407f";
+    const g = ctx.createLinearGradient(0, H, 0, 0);
+    g.addColorStop(0, color + "66"); g.addColorStop(1, color);
+    const buf = new Uint8Array(an.frequencyBinCount), n = 40, gap = 3, bw = (W - gap * (n - 1)) / n;
+    curSpec = { el, src, an };
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("in")));
+    return () => {
+      an.getByteFrequencyData(buf);
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = g;
+      for (let i = 0; i < n; i++) {
+        const bin = Math.min(buf.length - 1, Math.floor(Math.pow(i / n, 1.6) * buf.length * 0.75));
+        const h = Math.max(3, buf[bin] / 255 * (H - 4)), x = i * (bw + gap);
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(x, H - h, bw, h, Math.min(3, bw / 2)); else ctx.rect(x, H - h, bw, h);
+        ctx.fill();
+      }
+    };
+  } catch(e) { el.remove(); curSpec = null; return null; }
+}
 function resetBtn(b){ b.setAttribute("aria-pressed","false"); b.style.removeProperty("--p"); b.innerHTML = "&#9654; " + esc(T().music); }
 function stopMusic(){
   if (audio) { audio.pause(); audio = null; }
@@ -171,6 +259,13 @@ function stopMusic(){
     setTimeout(() => d.remove(), 600);
     curDisc = null;
   }
+  if (curSpec) {
+    const sp = curSpec;
+    try { sp.src.disconnect(); sp.an.disconnect(); } catch(e) {}
+    sp.el.classList.remove("in");
+    setTimeout(() => sp.el.remove(), 600);
+    curSpec = null;
+  }
   if (curLi) { curLi.classList.remove("playing"); curLi = null; }
 }
 list.addEventListener("click", e => {
@@ -179,22 +274,18 @@ list.addEventListener("click", e => {
   const wasOn = b === curBtn;
   stopMusic();
   if (wasOn) return;
-  const l = LEVELS[b.dataset.i];
+  const l = DATA()[b.dataset.i];
   const start = Math.max(0, parseInt(l.musicStart, 10) || 0);
   let end = parseInt(l.musicEnd, 10);
   if (!(end > start)) end = start + (Math.max(1, parseInt(l.musicLength, 10)) || 15);
   const len = end - start;
   const a = new Audio(l.music + "#t=" + start);
   audio = a; curBtn = b;
-  const li = b.closest("li"), d = document.createElement("div");
-  const art = thumbOf(l);
-  d.className = "disc";
-  d.innerHTML = `<i><img class="disc-art" src="${esc(DISC_IMAGE)}" alt="" onerror="this.style.display='none'">`
-    + (art ? `<img class="disc-label" src="${esc(art)}" alt="" onerror="this.style.display='none'">` : "")
-    + `<b></b></i>`;
-  li.appendChild(d); li.classList.add("playing");
-  curDisc = d; curLi = li;
-  requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add("in")));
+  const li = b.closest("li");
+  curLi = li;
+  let draw = null;
+  if (viz === "spectro" && canAnalyse(l.music)) draw = startSpectro(li, a);
+  if (!draw) startDisc(li, l);
   b.setAttribute("aria-pressed","true");
   b.innerHTML = "&#9632; " + esc(T().stop);
   const fi = Math.min(FADE_IN, len / 2), fo = Math.min(FADE_OUT, len / 2);
@@ -206,6 +297,7 @@ list.addEventListener("click", e => {
     if (t >= len) { stopMusic(); return; }
     a.volume = Math.max(0, Math.min(1, t / fi, (len - t) / fo));
     b.style.setProperty("--p", Math.max(0, t / len * 100) + "%");
+    if (draw) draw();
     requestAnimationFrame(tick);
   };
   a.addEventListener("playing", () => {
@@ -226,6 +318,8 @@ function setLang(v){
   document.documentElement.lang = lang;
   langSel.value = lang;
   document.querySelectorAll("[data-t]").forEach(el => el.textContent = T()[el.dataset.t]);
+  document.getElementById("sub").textContent = tab === "music" ? T().subMusic : T().sub;
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === tab));
   q.placeholder = T().search;
   q.setAttribute("aria-label", T().search);
   document.title = T().title;
@@ -240,7 +334,18 @@ function setTheme(v){
 }
 langSel.addEventListener("change", () => setLang(langSel.value));
 themeSel.addEventListener("change", () => setTheme(themeSel.value));
+vizSel.value = viz;
+vizSel.addEventListener("change", () => { viz = vizSel.value === "spectro" ? "spectro" : "disc"; store.set("dl-viz", viz); });
 q.addEventListener("input", render);
+document.querySelector(".tabs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tab]");
+  if (!b) return;
+  tab = b.dataset.tab === "music" ? "music" : "levels";
+  history.replaceState(null, "", tab === "music" ? "#music" : location.pathname + location.search);
+  q.value = "";
+  setLang(lang);
+});
+window.addEventListener("hashchange", () => { tab = location.hash === "#music" ? "music" : "levels"; q.value = ""; setLang(lang); });
 setTheme(store.get("dl-theme"));
 setLang(store.get("dl-lang") || ((navigator.language || "").toLowerCase().startsWith("vi") ? "vi" : "en"));
 </script>
