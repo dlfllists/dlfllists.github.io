@@ -10,7 +10,7 @@
 [data-theme="dark"]{--bg:#171538;--surface:#221f55;--ink:#f0eeff;--muted:#a9a5dd;--line:#38347a;--accent:#e2407f;--gold:#f2b632;color-scheme:dark}
 [data-theme="amethyst"]{--bg:#2b1850;--surface:#3a2268;--ink:#f3eaff;--muted:#c3a9ee;--line:#54368f;--accent:#9d4edd;--gold:#f2b632;color-scheme:dark}
 [data-theme="emerald"]{--bg:#e1f6ec;--surface:#fff;--ink:#0f3d2e;--muted:#4c7a69;--line:#bfe5d3;--accent:#0b8a5e;--gold:#e0a21c;color-scheme:light}
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Figtree,system-ui,sans-serif}
 .wrap{max-width:760px;margin:0 auto;padding:24px 18px 60px}
 .bar{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:22px}
@@ -30,11 +30,14 @@ li:first-child .pos{color:var(--gold)}
 .info{min-width:0;flex:1}
 .name{font-weight:700;margin:0;overflow-wrap:anywhere}
 .by{color:var(--muted);font-size:14px}
-.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;padding-bottom:3px}
 .links a{font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;text-decoration:none}
 .links a.show{background:var(--accent);border-color:var(--accent);color:#fff}
 .links button.music{background:linear-gradient(90deg,var(--line) var(--p,0%),transparent var(--p,0%));font:inherit;font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
 .links button.music[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.links a,.links button.music{box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.links a.show{box-shadow:0 3px 0 rgba(0,0,0,.28)}
+.links a:active,.links button.music:active{transform:translateY(3px);box-shadow:0 0 0 transparent}
 
 @media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}.bar{justify-content:flex-start}}
 </style>
