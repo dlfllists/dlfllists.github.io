@@ -4,7 +4,6 @@
 // The names must match the names in MUSIC_INFO inside index.html exactly.
 
 const MUSIC_LIST = `
-Example Song One
-Example Song Two
-Example Song Three
+The Hollowness
+Rainy Garden
 `;
