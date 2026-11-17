@@ -33,11 +33,9 @@ li:first-child .pos{color:var(--gold)}
 .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .links a{font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;text-decoration:none}
 .links a.show{background:var(--accent);border-color:var(--accent);color:#fff}
-.links button.music{font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
+.links button.music{background:linear-gradient(90deg,var(--line) var(--p,0%),transparent var(--p,0%));font:inherit;font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
 .links button.music[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
-.player{flex:1 1 100%}
-.player iframe{display:block;width:100%;max-width:420px;aspect-ratio:16/9;border:0;border-radius:8px}
-.player audio{display:block;width:100%}
+
 @media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}.bar{justify-content:flex-start}}
 </style>
 </head>
@@ -68,34 +66,34 @@ li:first-child .pos{color:var(--gold)}
    showcase = showcase video link (YouTube gives an automatic thumbnail)
    link     = play/download link (optional)
    thumb    = own thumbnail, e.g. "thumbs/level1.jpg" (optional)
-   music    = song link for the preview (optional). A YouTube link, or an audio
-              file in your repo like "music/level1.mp3". Adds a Preview button.
+   music    = short audio file for the preview (optional), in your repo, e.g.
+              "music/level1.mp3". Adds a Preview button. Audio only, no video.
    musicStart  = second the preview starts at (optional, default 0), e.g. 45
-   musicLength = how many seconds it plays (optional, default 15), e.g. 20
-              The preview stops by itself after that. */
+   musicEnd    = second the preview stops at (optional, default start + 15), e.g. 62
+              The preview stops by itself at that second. */
 const INFO = {
-  "The Samsara": { creator:"Pegasi", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", thumb:"thumbs/maxresdefault.jpg", music:"https://youtu.be/fHpiDxDjP-c?si=EPjZABfOYTBmvgon", musicStart:19, musicLength:10 },
-  "The Rock":    { creator:"Theo5970", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", thumb:"thumbs/thumb1.jpg", music:"https://youtu.be/WGLtRoEIGi4?si=ZiNSy_SCDis5Qk6h", musicStart:24, musicLength:10 },
-  "White Realm II": { creator: "CXY-Chen", showcase:"https://youtu.be/u12OrH1eGAc?si=FZAuAbo8XxsgwvTn", link:"https://m.chinadlrs.com", music:"https://youtu.be/u12OrH1eGAc?si=UrynwIlfzswQiL55", musicStart:3, musicLength:10},
-  "Storm of Anger": { creator: "FengYan", showcase:"https://youtu.be/GqeARenMMcQ?si=YRV-qUKmsd7Tg_0m", link:"https://m.chinadlrs.com", music:"https://youtu.be/GqeARenMMcQ?si=DWMqYqwoy1hkFj7Q", musicStart:27, musicLength:10},
-  "The Mathematics": { creator: "LigaYb", showcase:"https://youtu.be/sjy8oRq-T-8?si=pDvegGsXTXSOdIdQ", music:"https://youtu.be/sjy8oRq-T-8?si=W6RPGieW7G1fE5M_", musicStart:1, musicLength:10},
-  "The Forest": { creator:"LigaYb", showcase:"https://youtu.be/HteGhvnTkEc?si=4BaRB4is2vSBRFYb", music:"https://youtu.be/HteGhvnTkEc?si=9PVwbJ-EqyfEDUHH", musicStart:0, musicLength:10},
-  "The Garden": { creator:"LigaYb", showcase:"https://youtu.be/pa8VUG0Yh6Y?si=ZiZSU4PSrQMeIFoC", music:"https://youtu.be/ReJkQFmdlX4?si=tmdvgGFf01VXqvrc", musicStart:0, musicLength:10},
-  "The Jupiter": { creator:"LigaYb", showcase:"https://youtu.be/n1SU05OKMdc?si=ud1c4qU5FFFFF4AS", music:"https://youtu.be/C0Sr7iXE0Hk?si=yrM_aBHMHcVLWB-R", musicStart:17, musicLength:10},
-  "The Chemistry": { creator:"LigaYb", showcase:"https://youtu.be/O-ZQYh2wz6U?si=Dd2VE6MNnMalvwsP", music:"https://youtu.be/jL9G63bnC0s?si=PCiFAHa28fadCP_7", musicStart:12, musicLength:10},
-  "The Gemini": { creator:"LigaYb", showcase:"https://youtu.be/x5BikB9-4o4?si=whklt6cLTTHjK24j", music:"https://youtu.be/58jxiKR0OLg?si=PSnCr3PkD_uobwWA", musicStart:9, musicLength:10},
-  "The Cubic World": { creator:"LigaYb", showcase:"https://youtu.be/O1W5C3_hyoc?si=ej2i0AnnTDuhQvX-", music:"https://youtu.be/kBihz45U2zw?si=N2vXpl-6y3pPWU97", musicStart:25, musicLength:10},
+  "The Samsara": { creator:"Pegasi", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", thumb:"thumbs/maxresdefault.jpg", music:"Music/Samsara.mp3", musicStart:17, musicEnd:35 },
+  "The Rock":    { creator:"Theo5970", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", thumb:"thumbs/thumb1.jpg", music:"Music/Rock.mp3", musicStart:0, musicEnd:15 },
+  "White Realm II": { creator: "CXY-Chen", showcase:"https://youtu.be/u12OrH1eGAc?si=FZAuAbo8XxsgwvTn", link:"https://m.chinadlrs.com", music:"Music/WhiteRealm2.mp3", musicStart:1, musicEnd:15 },
+  "Storm of Anger": { creator: "FengYan", showcase:"https://youtu.be/GqeARenMMcQ?si=YRV-qUKmsd7Tg_0m", link:"https://m.chinadlrs.com", music:"music/Storm.mp3", musicStart:25, musicEnd:40 },
+  "The Mathematics": { creator: "LigaYb", showcase:"https://youtu.be/sjy8oRq-T-8?si=pDvegGsXTXSOdIdQ", music:"Music/Mathematics.mp3", musicStart:0, musicEnd:15 },
+  "The Forest": { creator:"LigaYb", showcase:"https://youtu.be/HteGhvnTkEc?si=4BaRB4is2vSBRFYb", music:"Music/Forest.mp3", musicStart:0, musicEnd:15 },
+  "The Garden": { creator:"LigaYb", showcase:"https://youtu.be/pa8VUG0Yh6Y?si=ZiZSU4PSrQMeIFoC", music:"Music/Garden.mp3", musicStart:1, musicEnd:15 },
+  "The Jupiter": { creator:"LigaYb", showcase:"https://youtu.be/n1SU05OKMdc?si=ud1c4qU5FFFFF4AS", music:"Music/Jupiter.mp3", musicStart:2, musicEnd:15 },
+  "The Chemistry": { creator:"LigaYb", showcase:"https://youtu.be/O-ZQYh2wz6U?si=Dd2VE6MNnMalvwsP", music:"Music/Chemistry.mp3", musicStart:0, musicEnd:15 },
+  "The Gemini": { creator:"LigaYb", showcase:"https://youtu.be/x5BikB9-4o4?si=whklt6cLTTHjK24j", music:"Music/Gemini.mp3", musicStart:1, musicEnd:15 },
+  "The Cubic World": { creator:"LigaYb", showcase:"https://youtu.be/O1W5C3_hyoc?si=ej2i0AnnTDuhQvX-", music:"Music/CubicWorld.mp3", musicStart:2, musicEnd:15 },
 };
 
 /* ===== TEXT IN EACH LANGUAGE (add more languages here later) ===== */
 const TEXT = {
   en: { language:"Language", theme:"Theme", amethyst:"Amethyst", default:"Default", dark:"Dark", emerald:"Emerald",
         title:"Dancing Line Fanmade Level Lists", sub:"Ranking Dancing Line Levels by difficulty",
-        search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail", music:"Preview", stop:"Stop", playerTitle:"Music preview of",
+        search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail", music:"Preview", stop:"Stop", noAudio:"Audio not found",
         thumbAlt:"Thumbnail of", none:"No levels match." },
   vi: { language:"Ngôn ngữ", theme:"Giao diện", amethyst:"Thạch anh tím", default:"Mặc định", dark:"Tối", emerald:"Ngọc lục bảo",
-        title:"Danh sách Level Dancing Line do Fan làm", sub:"Xếp hạng các level Dancing Line theo độ khó",
-        search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", playerTitle:"Nghe thử nhạc của",
+        title:"Danh sách Level Dancing Line do fan làm", sub:"Xếp hạng các level Dancing Line theo độ khó",
+        search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", noAudio:"Không tìm thấy âm thanh",
         thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào." }
 };
 
@@ -129,11 +127,93 @@ function thumbFail(img){
   img.replaceWith(d);
 }
 function render(){
+  stopMusic();
   const t = q.value.trim().toLowerCase(), x = T();
   const rows = LEVELS.map((l,i) => ({l,i}))
     .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t));
   if (!rows.length) { list.innerHTML = `<li class="empty">${esc(x.none)}</li>`; return; }
   list.innerHTML = rows.map(({l,i}) => {
+    const th = thumbOf(l);
+    const img = th ? `<img class="thumb" src="${esc(th)}" alt="${esc(x.thumbAlt)} ${esc(l.name)}" loading="lazy" onerror="thumbFail(this)">`
+                   : `<div class="thumb none">${esc(x.noThumb)}</div>`;
+    const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(x.showcase)}</a>` : "")
+                + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">${esc(x.play)}</a>` : "")
+                + (l.music && !ytId(l.music) ? `<button type="button" class="music" data-i="${i}" aria-pressed="false">&#9654; ${esc(x.music)}</button>` : "");
+    return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
+  }).join("");
+}
+const FADE_IN = 1, FADE_OUT = 1.5; // fade lengths in seconds, change if you like
+let audio = null, curBtn = null;
+function resetBtn(b){ b.setAttribute("aria-pressed","false"); b.style.removeProperty("--p"); b.innerHTML = "&#9654; " + esc(T().music); }
+function stopMusic(){
+  if (audio) { audio.pause(); audio = null; }
+  if (curBtn) { if (curBtn.isConnected) resetBtn(curBtn); curBtn = null; }
+}
+list.addEventListener("click", e => {
+  const b = e.target.closest("button.music");
+  if (!b) return;
+  const wasOn = b === curBtn;
+  stopMusic();
+  if (wasOn) return;
+  const l = LEVELS[b.dataset.i];
+  const start = Math.max(0, parseInt(l.musicStart, 10) || 0);
+  let end = parseInt(l.musicEnd, 10);
+  if (!(end > start)) end = start + (Math.max(1, parseInt(l.musicLength, 10)) || 15);
+  const len = end - start;
+  const a = new Audio(l.music + "#t=" + start);
+  audio = a; curBtn = b;
+  b.setAttribute("aria-pressed","true");
+  b.innerHTML = "&#9632; " + esc(T().stop);
+  const fi = Math.min(FADE_IN, len / 2), fo = Math.min(FADE_OUT, len / 2);
+  let looping = false;
+  a.volume = 0;
+  const tick = () => {
+    if (audio !== a) return;
+    const t = a.currentTime - start;
+    if (t >= len) { stopMusic(); return; }
+    a.volume = Math.max(0, Math.min(1, t / fi, (len - t) / fo));
+    b.style.setProperty("--p", Math.max(0, t / len * 100) + "%");
+    requestAnimationFrame(tick);
+  };
+  a.addEventListener("playing", () => {
+    if (a.currentTime < start - 0.5) a.currentTime = start;
+    if (!looping) { looping = true; requestAnimationFrame(tick); }
+  });
+  a.addEventListener("ended", () => { if (audio === a) stopMusic(); });
+  a.addEventListener("error", () => {
+    if (audio !== a) return;
+    stopMusic();
+    b.textContent = T().noAudio;
+    setTimeout(() => { if (b.isConnected && b !== curBtn) resetBtn(b); }, 2500);
+  });
+  a.play().catch(() => { if (audio === a) a.dispatchEvent(new Event("error")); });
+});
+function setLang(v){
+  lang = TEXT[v] ? v : "en";
+  document.documentElement.lang = lang;
+  langSel.value = lang;
+  document.querySelectorAll("[data-t]").forEach(el => el.textContent = T()[el.dataset.t]);
+  q.placeholder = T().search;
+  q.setAttribute("aria-label", T().search);
+  document.title = T().title;
+  store.set("dl-lang", lang);
+  render();
+}
+function setTheme(v){
+  v = THEMES.includes(v) ? v : "default";
+  document.documentElement.dataset.theme = v;
+  themeSel.value = v;
+  store.set("dl-theme", v);
+}
+langSel.addEventListener("change", () => setLang(langSel.value));
+themeSel.addEventListener("change", () => setTheme(themeSel.value));
+q.addEventListener("input", render);
+setTheme(store.get("dl-theme"));
+setLang(store.get("dl-lang") || ((navigator.language || "").toLowerCase().startsWith("vi") ? "vi" : "en"));
+</script>
+</body>
+</html>
+nerHTML = rows.map(({l,i}) => {
     const th = thumbOf(l);
     const img = th ? `<img class="thumb" src="${esc(th)}" alt="${esc(x.thumbAlt)} ${esc(l.name)}" loading="lazy" onerror="thumbFail(this)">`
                    : `<div class="thumb none">${esc(x.noThumb)}</div>`;
