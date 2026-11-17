@@ -3,8 +3,10 @@
 // To move a level up: cut its line and paste it higher. That's all.
 // The names must match the names in index.html exactly.
 
-const LIST = `
+const LIST =`
+The Insanity
 The Samsara
+The Storm Hard
 Storm of Anger
 The Chemistry
 The Jupiter
