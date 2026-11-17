@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dancing Line Fanmade Level Lists</title>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap&subset=vietnamese,latin-ext" rel="stylesheet">
 <style>
 :root,[data-theme="default"]{--bg:#ebe8ff;--surface:#fff;--ink:#1d1a4a;--muted:#6a679a;--line:#d6d1f5;--accent:#e2407f;--gold:#f2b632;color-scheme:light}
 [data-theme="dark"]{--bg:#171538;--surface:#221f55;--ink:#f0eeff;--muted:#a9a5dd;--line:#38347a;--accent:#e2407f;--gold:#f2b632;color-scheme:dark}
@@ -22,7 +21,7 @@ p.sub{margin:0 0 20px;color:var(--muted)}
 input{width:100%;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;margin-bottom:16px}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-li{display:flex;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px 10px 16px}
+li{display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px 10px 16px}
 li.empty{justify-content:center;color:var(--muted)}
 .pos{font:800 22px Unbounded,sans-serif;min-width:2.2ch;color:var(--muted)}
 li:first-child .pos{color:var(--gold)}
@@ -34,6 +33,11 @@ li:first-child .pos{color:var(--gold)}
 .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .links a{font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;text-decoration:none}
 .links a.show{background:var(--accent);border-color:var(--accent);color:#fff}
+.links button.music{font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
+.links button.music[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.player{flex:1 1 100%}
+.player iframe{display:block;width:100%;max-width:420px;aspect-ratio:16/9;border:0;border-radius:8px}
+.player audio{display:block;width:100%}
 @media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}.bar{justify-content:flex-start}}
 </style>
 </head>
@@ -63,38 +67,40 @@ li:first-child .pos{color:var(--gold)}
    creator  = who made it
    showcase = showcase video link (YouTube gives an automatic thumbnail)
    link     = play/download link (optional)
-   thumb    = own thumbnail, e.g. "thumbs/level1.jpg" (optional) */
+   thumb    = own thumbnail, e.g. "thumbs/level1.jpg" (optional)
+   music    = song link for the preview (optional). A YouTube link, or an audio
+              file in your repo like "music/level1.mp3". Adds a Preview button.
+   musicStart  = second the preview starts at (optional, default 0), e.g. 45
+   musicLength = how many seconds it plays (optional, default 15), e.g. 20
+              The preview stops by itself after that. */
 const INFO = {
-  "The Samsara": { creator:"Pegasi", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", thumb:"thumbs/maxresdefault.jpg" },
-  "The Rock":    { creator:"Theo5970", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", thumb:"thumbs/thumb1.jpg" },
-  "White Realm II": { creator: "CXY-Chen", showcase:"https://youtu.be/u12OrH1eGAc?si=FZAuAbo8XxsgwvTn", link:"https://m.chinadlrs.com"},
-  "Storm of Anger": { creator: "FengYan", showcase:"https://youtu.be/GqeARenMMcQ?si=YRV-qUKmsd7Tg_0m", link:"https://m.chinadlrs.com"},
-  "The Mathematics": { creator: "LigaYb", showcase:"https://youtu.be/sjy8oRq-T-8?si=pDvegGsXTXSOdIdQ"},
-  "The Forest": { creator:"LigaYb", showcase:"https://youtu.be/HteGhvnTkEc?si=4BaRB4is2vSBRFYb"},
-  "The Garden": { creator:"LigaYb", showcase:"https://youtu.be/pa8VUG0Yh6Y?si=ZiZSU4PSrQMeIFoC"},
-  "The Jupiter": { creator:"LigaYb", showcase:"https://youtu.be/n1SU05OKMdc?si=ud1c4qU5FFFFF4AS"},
-  "The Chemistry": { creator:"LigaYb", showcase:"https://youtu.be/O-ZQYh2wz6U?si=Dd2VE6MNnMalvwsP"},
-  "The Gemini": { creator:"LigaYb", showcase:"https://youtu.be/x5BikB9-4o4?si=whklt6cLTTHjK24j"},
-  "The Cubic World": { creator:"LigaYb", showcase:"https://youtu.be/O1W5C3_hyoc?si=ej2i0AnnTDuhQvX-"},
+  "The Samsara": { creator:"Pegasi", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", thumb:"thumbs/maxresdefault.jpg", music:"https://youtu.be/fHpiDxDjP-c?si=EPjZABfOYTBmvgon", musicStart:19, musicLength:10 },
+  "The Rock":    { creator:"Theo5970", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", thumb:"thumbs/thumb1.jpg", music:"https://youtu.be/WGLtRoEIGi4?si=ZiNSy_SCDis5Qk6h", musicStart:24, musicLength:10 },
+  "White Realm II": { creator: "CXY-Chen", showcase:"https://youtu.be/u12OrH1eGAc?si=FZAuAbo8XxsgwvTn", link:"https://m.chinadlrs.com", music:"https://youtu.be/u12OrH1eGAc?si=UrynwIlfzswQiL55", musicStart:3, musicLength:10},
+  "Storm of Anger": { creator: "FengYan", showcase:"https://youtu.be/GqeARenMMcQ?si=YRV-qUKmsd7Tg_0m", link:"https://m.chinadlrs.com", music:"https://youtu.be/GqeARenMMcQ?si=DWMqYqwoy1hkFj7Q", musicStart:27, musicLength:10},
+  "The Mathematics": { creator: "LigaYb", showcase:"https://youtu.be/sjy8oRq-T-8?si=pDvegGsXTXSOdIdQ", music:"https://youtu.be/sjy8oRq-T-8?si=W6RPGieW7G1fE5M_", musicStart:1, musicLength:10},
+  "The Forest": { creator:"LigaYb", showcase:"https://youtu.be/HteGhvnTkEc?si=4BaRB4is2vSBRFYb", music:"https://youtu.be/HteGhvnTkEc?si=9PVwbJ-EqyfEDUHH", musicStart:0, musicLength:10},
+  "The Garden": { creator:"LigaYb", showcase:"https://youtu.be/pa8VUG0Yh6Y?si=ZiZSU4PSrQMeIFoC", music:"https://youtu.be/ReJkQFmdlX4?si=tmdvgGFf01VXqvrc", musicStart:0, musicLength:10},
+  "The Jupiter": { creator:"LigaYb", showcase:"https://youtu.be/n1SU05OKMdc?si=ud1c4qU5FFFFF4AS", music:"https://youtu.be/C0Sr7iXE0Hk?si=yrM_aBHMHcVLWB-R", musicStart:17, musicLength:10},
+  "The Chemistry": { creator:"LigaYb", showcase:"https://youtu.be/O-ZQYh2wz6U?si=Dd2VE6MNnMalvwsP", music:"https://youtu.be/jL9G63bnC0s?si=PCiFAHa28fadCP_7", musicStart:12, musicLength:10},
+  "The Gemini": { creator:"LigaYb", showcase:"https://youtu.be/x5BikB9-4o4?si=whklt6cLTTHjK24j", music:"https://youtu.be/58jxiKR0OLg?si=PSnCr3PkD_uobwWA", musicStart:9, musicLength:10},
+  "The Cubic World": { creator:"LigaYb", showcase:"https://youtu.be/O1W5C3_hyoc?si=ej2i0AnnTDuhQvX-", music:"https://youtu.be/kBihz45U2zw?si=N2vXpl-6y3pPWU97", musicStart:25, musicLength:10},
 };
 
 /* ===== TEXT IN EACH LANGUAGE (add more languages here later) ===== */
 const TEXT = {
   en: { language:"Language", theme:"Theme", amethyst:"Amethyst", default:"Default", dark:"Dark", emerald:"Emerald",
         title:"Dancing Line Fanmade Level Lists", sub:"Ranking Dancing Line Levels by difficulty",
-        search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail",
-        thumbAlt:"Thumbnail of", none:"No levels match.",
-        missing:"Could not load lists.js. Upload lists.js to the same folder as index.html (exact name, lowercase)." },
+        search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail", music:"Preview", stop:"Stop", playerTitle:"Music preview of",
+        thumbAlt:"Thumbnail of", none:"No levels match." },
   vi: { language:"Ngôn ngữ", theme:"Giao diện", amethyst:"Thạch anh tím", default:"Mặc định", dark:"Tối", emerald:"Ngọc lục bảo",
-        title:"Danh sách Level Dancing Line do fan làm", sub:"Xếp hạng các level Dancing Line theo độ khó",
-        search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa",
-        thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào.",
-        missing:"Không tải được lists.js. Hãy tải lists.js lên cùng thư mục với index.html (đúng tên, chữ thường)." }
+        title:"Danh sách Level Dancing Line do Fan làm", sub:"Xếp hạng các level Dancing Line theo độ khó",
+        search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", playerTitle:"Nghe thử nhạc của",
+        thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào." }
 };
 
 /* ===== Nothing below needs editing ===== */
-const RAW = (typeof LIST === "undefined") ? null : LIST;
-const LEVELS = (RAW || "").split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
+const LEVELS = LIST.split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
   .map(name => ({ name, creator:"", showcase:"", link:"", thumb:"", ...(INFO[name] || {}) }));
 const list = document.getElementById("list"), q = document.getElementById("q");
 const langSel = document.getElementById("lang"), themeSel = document.getElementById("theme");
@@ -124,7 +130,6 @@ function thumbFail(img){
 }
 function render(){
   const t = q.value.trim().toLowerCase(), x = T();
-  if (RAW === null) { list.innerHTML = `<li class="empty">${esc(x.missing)}</li>`; return; }
   const rows = LEVELS.map((l,i) => ({l,i}))
     .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t));
   if (!rows.length) { list.innerHTML = `<li class="empty">${esc(x.none)}</li>`; return; }
@@ -133,10 +138,37 @@ function render(){
     const img = th ? `<img class="thumb" src="${esc(th)}" alt="${esc(x.thumbAlt)} ${esc(l.name)}" loading="lazy" onerror="thumbFail(this)">`
                    : `<div class="thumb none">${esc(x.noThumb)}</div>`;
     const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(x.showcase)}</a>` : "")
-                + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">${esc(x.play)}</a>` : "");
+                + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">${esc(x.play)}</a>` : "")
+                + (l.music ? `<button type="button" class="music" data-i="${i}" aria-pressed="false">&#9654; ${esc(x.music)}</button>` : "");
     return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
   }).join("");
 }
+function playerHtml(l){
+  const x = T(), id = ytId(l.music);
+  const start = Math.max(0, parseInt(l.musicStart, 10) || 0);
+  const end = start + (Math.max(1, parseInt(l.musicLength, 10)) || 15);
+  if (id) {
+    return `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&start=${start}&end=${end}&rel=0&modestbranding=1" title="${esc(x.playerTitle)} ${esc(l.name)}" allow="autoplay; encrypted-media"></iframe>`;
+  }
+  return `<audio controls autoplay src="${esc(l.music)}#t=${start},${end}" aria-label="${esc(x.playerTitle)} ${esc(l.name)}"></audio>`;
+}
+function stopMusic(){
+  list.querySelectorAll(".player").forEach(p => p.remove());
+  list.querySelectorAll("button.music").forEach(b => { b.setAttribute("aria-pressed","false"); b.innerHTML = "&#9654; " + esc(T().music); });
+}
+list.addEventListener("click", e => {
+  const b = e.target.closest("button.music");
+  if (!b) return;
+  const wasOn = b.getAttribute("aria-pressed") === "true";
+  stopMusic();
+  if (wasOn) return;
+  const p = document.createElement("div");
+  p.className = "player";
+  p.innerHTML = playerHtml(LEVELS[b.dataset.i]);
+  b.closest("li").appendChild(p);
+  b.setAttribute("aria-pressed","true");
+  b.innerHTML = "&#9632; " + esc(T().stop);
+});
 function setLang(v){
   lang = TEXT[v] ? v : "en";
   document.documentElement.lang = lang;
