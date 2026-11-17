@@ -4,6 +4,6 @@
 // The names must match the names in index.html exactly.
 
 const LIST = `
-The Samsara
 The Rock
+The Samsara
 `;
