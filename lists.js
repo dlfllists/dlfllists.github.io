@@ -5,6 +5,7 @@
 
 const LIST = `
 The Samsara
+Storm of Anger
 The Rock
 White Realm II
 `;
