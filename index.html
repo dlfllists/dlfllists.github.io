@@ -21,7 +21,7 @@ p.sub{margin:0 0 20px;color:var(--muted)}
 input{width:100%;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;margin-bottom:16px}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-li{display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px 10px 16px}
+li{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px 10px 16px}
 li.empty{justify-content:center;color:var(--muted)}
 .pos{font:800 22px Unbounded,sans-serif;min-width:2.2ch;color:var(--muted)}
 li:first-child .pos{color:var(--gold)}
@@ -35,6 +35,17 @@ li:first-child .pos{color:var(--gold)}
 .links a.show{background:var(--accent);border-color:var(--accent);color:#fff}
 .links button.music{background:linear-gradient(90deg,var(--line) var(--p,0%),transparent var(--p,0%));font:inherit;font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
 .links button.music[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.disc{position:absolute;top:12px;right:14px;width:88px;height:88px;pointer-events:none;opacity:0;transform:translateX(150px);transition:transform .5s cubic-bezier(.2,.9,.3,1.15),opacity .3s}
+.disc.in{opacity:1;transform:translateX(0)}
+.disc i{position:relative;display:block;width:100%;height:100%;border-radius:50%;box-shadow:0 3px 10px rgba(0,0,0,.28);animation:spin 2.2s linear infinite;
+  background:radial-gradient(circle,var(--surface) 0 8%,rgba(0,0,0,.18) 8% 10%,var(--accent) 10% 30%,transparent 30%),
+  conic-gradient(#eceaf8,#9fb4ff,#f6c8ee,#eceaf8,#a8f0d8,#fff1b0,#eceaf8,#b9a8ff,#eceaf8)}
+.disc-art{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover}
+.disc-label{position:absolute;left:27%;top:27%;width:46%;height:46%;border-radius:50%;object-fit:cover;background:var(--line);box-shadow:0 0 0 2px rgba(0,0,0,.4)}
+.disc i b{position:absolute;left:46%;top:46%;width:8%;height:8%;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px rgba(0,0,0,.45)}
+@keyframes spin{to{transform:rotate(360deg)}}
+li.playing .info{padding-right:96px}
+@media (prefers-reduced-motion:reduce){.disc i{animation:none}}
 .links a,.links button.music{box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .links a.show{box-shadow:0 3px 0 rgba(0,0,0,.28)}
 .links a:active,.links button.music:active{transform:translateY(3px);box-shadow:0 0 0 transparent}
@@ -147,12 +158,20 @@ function render(){
     return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
   }).join("");
 }
+const DISC_IMAGE = "disc.png"; // your own disc picture, e.g. "disc.png" (put it in your repo)
 const FADE_IN = 1, FADE_OUT = 1.5; // fade lengths in seconds, change if you like
-let audio = null, curBtn = null;
+let audio = null, curBtn = null, curDisc = null, curLi = null;
 function resetBtn(b){ b.setAttribute("aria-pressed","false"); b.style.removeProperty("--p"); b.innerHTML = "&#9654; " + esc(T().music); }
 function stopMusic(){
   if (audio) { audio.pause(); audio = null; }
   if (curBtn) { if (curBtn.isConnected) resetBtn(curBtn); curBtn = null; }
+  if (curDisc) {
+    const d = curDisc;
+    d.classList.remove("in");
+    setTimeout(() => d.remove(), 600);
+    curDisc = null;
+  }
+  if (curLi) { curLi.classList.remove("playing"); curLi = null; }
 }
 list.addEventListener("click", e => {
   const b = e.target.closest("button.music");
@@ -167,6 +186,15 @@ list.addEventListener("click", e => {
   const len = end - start;
   const a = new Audio(l.music + "#t=" + start);
   audio = a; curBtn = b;
+  const li = b.closest("li"), d = document.createElement("div");
+  const art = thumbOf(l);
+  d.className = "disc";
+  d.innerHTML = `<i><img class="disc-art" src="${esc(DISC_IMAGE)}" alt="" onerror="this.style.display='none'">`
+    + (art ? `<img class="disc-label" src="${esc(art)}" alt="" onerror="this.style.display='none'">` : "")
+    + `<b></b></i>`;
+  li.appendChild(d); li.classList.add("playing");
+  curDisc = d; curLi = li;
+  requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add("in")));
   b.setAttribute("aria-pressed","true");
   b.innerHTML = "&#9632; " + esc(T().stop);
   const fi = Math.min(FADE_IN, len / 2), fo = Math.min(FADE_OUT, len / 2);
