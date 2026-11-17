@@ -6,6 +6,12 @@
 const LIST = `
 The Samsara
 Storm of Anger
+The Chemistry
+The Jupiter
+The Garden
+The Gemini
+The Forest
 The Rock
+The Cubic World
 White Realm II
 `;
