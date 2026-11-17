@@ -1,94 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="default">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dancing Line Fanmade Level Lists</title>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap&subset=vietnamese,latin-ext" rel="stylesheet">
 <style>
-:root{--bg:#ebe8ff;--surface:#fff;--ink:#1d1a4a;--muted:#6a679a;--line:#d6d1f5;--pink:#e2407f;--gold:#f2b632}
-@media (prefers-color-scheme:dark){:root{--bg:#171538;--surface:#221f55;--ink:#f0eeff;--muted:#a9a5dd;--line:#38347a}}
+:root,[data-theme="default"]{--bg:#ebe8ff;--surface:#fff;--ink:#1d1a4a;--muted:#6a679a;--line:#d6d1f5;--accent:#e2407f;--gold:#f2b632;color-scheme:light}
+[data-theme="dark"]{--bg:#171538;--surface:#221f55;--ink:#f0eeff;--muted:#a9a5dd;--line:#38347a;--accent:#e2407f;--gold:#f2b632;color-scheme:dark}
+[data-theme="amethyst"]{--bg:#2b1850;--surface:#3a2268;--ink:#f3eaff;--muted:#c3a9ee;--line:#54368f;--accent:#9d4edd;--gold:#f2b632;color-scheme:dark}
+[data-theme="emerald"]{--bg:#e1f6ec;--surface:#fff;--ink:#0f3d2e;--muted:#4c7a69;--line:#bfe5d3;--accent:#0b8a5e;--gold:#e0a21c;color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Figtree,system-ui,sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:40px 18px 60px}
-h1{font:800 clamp(26px,6vw,40px)/1.1 Unbounded,sans-serif;margin:0 0 8px}
+.wrap{max-width:760px;margin:0 auto;padding:24px 18px 60px}
+.bar{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:22px}
+.bar label{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+select{background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:6px 10px;font:inherit;font-size:14px}
+h1{font:800 clamp(26px,6vw,40px)/1.15 Unbounded,sans-serif;margin:0 0 8px}
 p.sub{margin:0 0 20px;color:var(--muted)}
-input{width:100%;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;margin-bottom:16px}
-:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
-ol{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-li{display:flex;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 14px 10px 16px}
-.pos{font:800 22px Unbounded,sans-serif;min-width:2.2ch;color:var(--muted)}
-li:first-child .pos{color:var(--gold)}
-.thumb{flex:none;width:128px;aspect-ratio:16/9;border-radius:8px;background:var(--line);object-fit:cover;display:block}
-.thumb.none{display:grid;place-items:center;color:var(--muted);font-size:12px}
-.info{min-width:0;flex:1}
-.name{font-weight:700;margin:0;overflow-wrap:anywhere}
-.by{color:var(--muted);font-size:14px}
-.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.links a{font-size:13px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:2px 10px;text-decoration:none}
-.links a.show{background:var(--pink);border-color:var(--pink);color:#fff}
-@media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>Dancing Line Fanmade Level Lists</h1>
-  <p class="sub">Ranking Dancing Line Levels by difficulty</p>
-  <input type="search" id="q" placeholder="Search levels" aria-label="Search levels">
-  <ol id="list"></ol>
-</div>
-<script src="lists.js"></script>
-<script>
-/* ===== LEVEL DETAILS (set once, never needs moving) =====
-   The ranking order is in lists.js. Here you only add info for each level.
-   The name must match the name in lists.js exactly.
-   creator  = who made it
-   showcase = showcase video link (YouTube gives an automatic thumbnail)
-   link     = play/download link (optional)
-   thumb    = own thumbnail, e.g. "thumbs/level1.jpg" (optional) */
-const INFO = {
-  "The Samsara": { creator:"Pegasi", showcase:"https://youtu.be/fHpiDxDjP-c?si=pZHpi6iKYursBlzd", link:"https://drive.google.com/open?id=13Q3hbsj9C-HHp-X_0yoCwqbp7qJF3FEQ", thumb:"thumbs/maxresdefault.jpg" },
-  "The Rock":    { creator:"Theo5970", showcase:"https://youtu.be/B25iHCA_dlc?si=WfM0OUuxUWQVd40H", link:"https://drive.google.com/file/d/1cocUO-wXCbHOXoDvGAI6ML0MthUaOztc/view?usp=drivesdk", thumb:"thumbs/thumb1.jpg" },
-  "White Realm II": { creator: "CXY-Chen", showcase:"https://youtu.be/u12OrH1eGAc?si=FZAuAbo8XxsgwvTn", link:"https://m.chinadlrs.com"},
-  "Storm of Anger": { creator: "FengYan", showcase:"https://youtu.be/GqeARenMMcQ?si=YRV-qUKmsd7Tg_0m", link:"https://m.chinadlrs.com"},
-  "The Mathematics": { creator: "LigaYb", showcase:"https://youtu.be/sjy8oRq-T-8?si=pDvegGsXTXSOdIdQ"},
-  "The Forest": { creator:"LigaYb", showcase:"https://youtu.be/HteGhvnTkEc?si=4BaRB4is2vSBRFYb"},
-  "The Garden": { creator:"LigaYb", showcase:"https://youtu.be/pa8VUG0Yh6Y?si=ZiZSU4PSrQMeIFoC"},
-  "The Jupiter": { creator:"LigaYb", showcase:"https://youtu.be/n1SU05OKMdc?si=ud1c4qU5FFFFF4AS"},
-  "The Chemistry": { creator:"LigaYb", showcase:"https://youtu.be/O-ZQYh2wz6U?si=Dd2VE6MNnMalvwsP"},
-  "The Gemini": { creator:"LigaYb", showcase:"https://youtu.be/x5BikB9-4o4?si=whklt6cLTTHjK24j"},
-  "The Cubic World": { creator:"LigaYb", showcase:"https://youtu.be/O1W5C3_hyoc?si=ej2i0AnnTDuhQvX-"},
-};
-/* ===== Nothing below needs editing ===== */
-const LEVELS = LIST.split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
-  .map(name => ({ name, creator:"", showcase:"", link:"", thumb:"", ...(INFO[name] || {}) }));
-const list = document.getElementById("list"), q = document.getElementById("q");
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const isUrl = u => /^https?:\/\//i.test(u || "");
-function ytId(u){
-  const m = String(u || "").match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
-  return m ? m[1] : "";
-}
-function thumbOf(l){
-  if (l.thumb) return l.thumb;
-  const id = ytId(l.showcase);
-  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
-}
-function render(){
-  const t = q.value.trim().toLowerCase();
-  list.innerHTML = LEVELS.map((l,i) => ({l,i}))
-    .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t))
-    .map(({l,i}) => {
-      const th = thumbOf(l);
-      const img = th ? `<img class="thumb" src="${esc(th)}" alt="Thumbnail of ${esc(l.name)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;thumb none&quot;>No thumbnail</div>'">`
-                     : `<div class="thumb none">No thumbnail</div>`;
-      const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">Showcase</a>` : "")
-                  + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">Play</a>` : "");
-      return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">by ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
-    }).join("");
-}
-q.addEventListener("input", render);
-render();
-</script>
-</body>
-</html>
