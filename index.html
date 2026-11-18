@@ -56,6 +56,24 @@ li:first-child .pos{color:var(--gold)}
 @keyframes rainbow{to{background-position:100% center}}
 @media (prefers-reduced-motion:reduce){.hero h1{animation:none}}
 .hero p.sub{color:#ffd166;margin:0;max-width:34ch}
+.menu-btn{width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:var(--surface);display:grid;place-content:center;gap:5px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
+.menu-btn span{display:block;width:20px;height:3px;border-radius:2px;background:var(--ink)}
+.menu-btn:active{transform:translateY(3px);box-shadow:0 0 0 transparent}
+.scrim{position:fixed;inset:0;background:rgba(10,8,30,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
+.scrim.open{opacity:1;pointer-events:auto}
+.menu{position:fixed;top:0;right:0;bottom:0;width:min(330px,88vw);background:var(--surface);color:var(--ink);border-left:2px solid var(--line);padding:18px 18px 28px;overflow-y:auto;transform:translateX(105%);visibility:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s;z-index:21;box-shadow:-8px 0 24px rgba(0,0,0,.25)}
+.menu.open{transform:none;visibility:visible;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.menu-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.menu h2{font:800 20px Unbounded,sans-serif;margin:0}
+.menu h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:20px 0 8px}
+.menu-close{width:40px;height:40px;border-radius:10px;border:2px solid var(--line);background:transparent;color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.menu .tabs{flex-direction:column;margin:0 0 4px}
+.menu label{display:grid;gap:6px;margin:0 0 14px;font-size:14px;color:var(--muted)}
+.menu select{width:100%}
+.menu ol{margin-bottom:6px}
+.menu li{flex-wrap:wrap}
+.menu .thumb{width:100%;order:3}
+.menu .info{flex:1 1 60%}
 .tabs{display:flex;gap:8px;margin:0 0 16px}
 .tabs button{flex:1;font:inherit;font-weight:700;color:var(--muted);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
 .tabs button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
@@ -83,12 +101,27 @@ li.playing .info{padding-right:96px}
 .links a.show{box-shadow:0 3px 0 rgba(0,0,0,.28)}
 .links a:active,.links button.music:active{transform:translateY(3px);box-shadow:0 0 0 transparent}
 
-@media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}.bar{justify-content:flex-start}}
+@media (max-width:520px){li{flex-wrap:wrap}.thumb{width:100%;order:3}.info{flex:1 1 60%}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="bar">
+    <button type="button" id="menuBtn" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+  <header class="hero">
+  <h1 data-t="title">Dancing Line Fanmade Level Lists</h1>
+  <p class="sub" id="sub">A list for Dancing Line Fanmade Levels</p>
+  </header>
+  <input type="search" id="q" data-t-ph="search" placeholder="Search levels">
+  <ol id="list"></ol>
+</div>
+<div id="scrim" class="scrim"></div>
+<aside id="menu" class="menu" aria-hidden="true" aria-label="Settings">
+  <div class="menu-head"><h2 data-t="menu">Menu</h2><button type="button" id="menuClose" class="menu-close" aria-label="Close">&times;</button></div>
+  <h3 data-t="tabMusic">Music</h3>
+  <ol id="musicList"></ol>
+  <h3 data-t="settings">Settings</h3>
     <label><span data-t="language">Language</span>
       <select id="lang"><option value="en">English</option><option value="vi">Tiếng Việt</option></select></label>
     <label><span data-t="viz">Preview style</span>
@@ -103,18 +136,7 @@ li.playing .info{padding-right:96px}
         <option value="dark" data-t="dark">Dark</option>
         <option value="emerald" data-t="emerald">Emerald</option>
       </select></label>
-  </div>
-  <header class="hero">
-  <h1 data-t="title">Dancing Line Fanmade Level Lists</h1>
-  <p class="sub" id="sub">A list for Dancing Line Fanmade Levels</p>
-  </header>
-  <div class="tabs" role="tablist">
-    <button type="button" role="tab" data-tab="levels" data-t="tabLevels" aria-selected="true">Levels</button>
-    <button type="button" role="tab" data-tab="music" data-t="tabMusic" aria-selected="false">Music</button>
-  </div>
-  <input type="search" id="q" data-t-ph="search" placeholder="Search levels">
-  <ol id="list"></ol>
-</div>
+</aside>
 <script src="lists.js"></script>
 <script src="musiclist.js"></script>
 <script>
@@ -164,13 +186,15 @@ const TEXT = {
         search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail", music:"Preview", stop:"Stop", noAudio:"Audio not found",
         thumbAlt:"Thumbnail of", none:"No levels match.",
         tabLevels:"Levels", tabMusic:"Music", subMusic:"Songs from Dancing Line Fanmade Levels", listen:"Listen",
-        viz:"Preview style", vizDisc:"Disc", vizSpectro:"Spectrogram" },
+        viz:"Preview style", vizDisc:"Disc", vizSpectro:"Spectrogram",
+        settings:"Settings", pages:"Pages", prefs:"Preferences", menu:"Menu", close:"Close", noMusic:"No songs yet." },
   vi: { language:"Ngôn ngữ", theme:"Giao diện", amethyst:"Thạch anh tím", default:"Mặc định", dark:"Tối", emerald:"Ngọc lục bảo",
         title:"Danh sách các Level Dancing Line do Fan làm", sub:"Một danh sách cho các Level Dancing Line do Fan Làm",
         search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", noAudio:"Không tìm thấy âm thanh",
         thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào.",
         tabLevels:"Level", tabMusic:"Nhạc", subMusic:"Các Bài Nhạc của các Level Dancing Line do Fan Làm", listen:"Nghe",
-        viz:"Kiểu xem trước", vizDisc:"Đĩa", vizSpectro:"Phổ âm thanh" }
+        viz:"Kiểu xem trước", vizDisc:"Đĩa", vizSpectro:"Phổ âm thanh",
+        settings:"Cài đặt", pages:"Trang", prefs:"Tùy chọn", menu:"Menu", close:"Đóng", noMusic:"Chưa có bài nhạc nào." }
 };
 
 /* ===== Nothing below needs editing ===== */
@@ -179,9 +203,8 @@ const LEVELS = LIST.split("\n").map(x => x.trim()).filter(x => x && !x.startsWit
 const MUSICS = (typeof MUSIC_LIST === "undefined" ? "" : MUSIC_LIST).split("\n").map(x => x.trim()).filter(x => x && !x.startsWith("//"))
   .map(name => { const m = MUSIC_INFO[name] || {};
     return { name, creator:m.artist || "", showcase:m.link || "", link:"", thumb:m.thumb || "", music:m.music, musicStart:m.musicStart, musicEnd:m.musicEnd }; });
-let tab = location.hash === "#music" ? "music" : "levels";
-const DATA = () => tab === "music" ? MUSICS : LEVELS;
-const list = document.getElementById("list"), q = document.getElementById("q");
+const SETS = { levels: LEVELS, music: MUSICS };
+const list = document.getElementById("list"), musicListEl = document.getElementById("musicList"), q = document.getElementById("q");
 const langSel = document.getElementById("lang"), themeSel = document.getElementById("theme");
 const THEMES = ["amethyst","default","dark","emerald"];
 let lang = "en";
@@ -207,21 +230,22 @@ function thumbFail(img){
   d.textContent = T().noThumb;
   img.replaceWith(d);
 }
+function rowHtml(l, i, set){
+  const x = T(), th = thumbOf(l), ld = set === "music" ? "eager" : "lazy";
+  const img = th ? `<img class="thumb" src="${esc(th)}" alt="${esc(x.thumbAlt)} ${esc(l.name)}" loading="${ld}" onerror="thumbFail(this)">`
+                 : `<div class="thumb none">${esc(x.noThumb)}</div>`;
+  const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(set === "music" ? x.listen : x.showcase)}</a>` : "")
+              + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">${esc(x.play)}</a>` : "")
+              + (l.music && !ytId(l.music) ? `<button type="button" class="music" data-set="${set}" data-i="${i}" aria-pressed="false">&#9654; ${esc(x.music)}</button>` : "");
+  return `<li>${set === "music" ? "" : `<span class="pos">${i+1}</span>`}${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
+}
 function render(){
   stopMusic();
   const t = q.value.trim().toLowerCase(), x = T();
-  const rows = DATA().map((l,i) => ({l,i}))
+  const rows = LEVELS.map((l,i) => ({l,i}))
     .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t));
-  if (!rows.length) { list.innerHTML = `<li class="empty">${esc(x.none)}</li>`; return; }
-  list.innerHTML = rows.map(({l,i}) => {
-    const th = thumbOf(l);
-    const img = th ? `<img class="thumb" src="${esc(th)}" alt="${esc(x.thumbAlt)} ${esc(l.name)}" loading="lazy" onerror="thumbFail(this)">`
-                   : `<div class="thumb none">${esc(x.noThumb)}</div>`;
-    const links = (isUrl(l.showcase) ? `<a class="show" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(tab === "music" ? x.listen : x.showcase)}</a>` : "")
-                + (isUrl(l.link) ? `<a href="${esc(l.link)}" target="_blank" rel="noopener">${esc(x.play)}</a>` : "")
-                + (l.music && !ytId(l.music) ? `<button type="button" class="music" data-i="${i}" aria-pressed="false">&#9654; ${esc(x.music)}</button>` : "");
-    return `<li><span class="pos">${i+1}</span>${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
-  }).join("");
+  list.innerHTML = rows.length ? rows.map(({l,i}) => rowHtml(l,i,"levels")).join("") : `<li class="empty">${esc(x.none)}</li>`;
+  musicListEl.innerHTML = MUSICS.length ? MUSICS.map((l,i) => rowHtml(l,i,"music")).join("") : `<li class="empty">${esc(x.noMusic)}</li>`;
 }
 const DISC_IMAGE = "disc.png"; // your own disc picture, e.g. "disc.png" (put it in your repo)
 const FADE_IN = 1, FADE_OUT = 1.5; // fade lengths in seconds, change if you like
@@ -296,13 +320,13 @@ function stopMusic(){
   }
   if (curLi) { curLi.classList.remove("playing"); curLi = null; }
 }
-list.addEventListener("click", e => {
+document.addEventListener("click", e => {
   const b = e.target.closest("button.music");
   if (!b) return;
   const wasOn = b === curBtn;
   stopMusic();
   if (wasOn) return;
-  const l = DATA()[b.dataset.i];
+  const l = SETS[b.dataset.set][b.dataset.i];
   const start = Math.max(0, parseInt(l.musicStart, 10) || 0);
   let end = parseInt(l.musicEnd, 10);
   if (!(end > start)) end = start + (Math.max(1, parseInt(l.musicLength, 10)) || 15);
@@ -346,11 +370,13 @@ function setLang(v){
   document.documentElement.lang = lang;
   langSel.value = lang;
   document.querySelectorAll("[data-t]").forEach(el => el.textContent = T()[el.dataset.t]);
-  document.getElementById("sub").textContent = tab === "music" ? T().subMusic : T().sub;
-  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === tab));
+  document.getElementById("sub").textContent = T().sub;
   q.placeholder = T().search;
   q.setAttribute("aria-label", T().search);
   document.title = T().title;
+  menuBtn.setAttribute("aria-label", T().menu);
+  menuClose.setAttribute("aria-label", T().close);
+  menuEl.setAttribute("aria-label", T().menu);
   store.set("dl-lang", lang);
   render();
 }
@@ -365,15 +391,25 @@ themeSel.addEventListener("change", () => setTheme(themeSel.value));
 vizSel.value = viz;
 vizSel.addEventListener("change", () => { viz = vizSel.value === "spectro" ? "spectro" : "disc"; store.set("dl-viz", viz); });
 q.addEventListener("input", render);
-document.querySelector(".tabs").addEventListener("click", e => {
-  const b = e.target.closest("button[data-tab]");
-  if (!b) return;
-  tab = b.dataset.tab === "music" ? "music" : "levels";
-  history.replaceState(null, "", tab === "music" ? "#music" : location.pathname + location.search);
-  q.value = "";
-  setLang(lang);
-});
-window.addEventListener("hashchange", () => { tab = location.hash === "#music" ? "music" : "levels"; q.value = ""; setLang(lang); });
+const menuEl = document.getElementById("menu"), scrim = document.getElementById("scrim");
+const menuBtn = document.getElementById("menuBtn"), menuClose = document.getElementById("menuClose");
+function openMenu(){
+  menuEl.classList.add("open"); scrim.classList.add("open");
+  menuEl.setAttribute("aria-hidden","false"); menuBtn.setAttribute("aria-expanded","true");
+  menuClose.focus();
+}
+function closeMenu(){
+  if (!menuEl.classList.contains("open")) return;
+  if (curLi && menuEl.contains(curLi)) stopMusic();
+  menuEl.classList.remove("open"); scrim.classList.remove("open");
+  menuEl.setAttribute("aria-hidden","true"); menuBtn.setAttribute("aria-expanded","false");
+  menuBtn.focus();
+}
+menuBtn.addEventListener("click", () => menuEl.classList.contains("open") ? closeMenu() : openMenu());
+menuClose.addEventListener("click", closeMenu);
+scrim.addEventListener("click", closeMenu);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+if (location.hash === "#music") openMenu();
 setTheme(store.get("dl-theme"));
 setLang(store.get("dl-lang") || ((navigator.language || "").toLowerCase().startsWith("vi") ? "vi" : "en"));
 </script>
