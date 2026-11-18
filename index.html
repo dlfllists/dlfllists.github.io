@@ -52,7 +52,9 @@ li:first-child .pos{color:var(--gold)}
 .name{font-weight:700;margin:0;overflow-wrap:anywhere}
 .by{color:var(--muted);font-size:14px}
 .hero{background:#1d1a4a url(header-bg.jpg) right center/cover no-repeat;border-radius:18px;padding:30px 22px 34px;margin:0 0 18px;box-shadow:0 4px 0 var(--line)}
-.hero h1{...background:linear-gradient(90deg,#ff5e5e,#ffb347,#ffe66d,#5eead4,#60a5fa,#c084fc,#ff5e5e);...animation:rainbow 6s linear infinite}
+.hero h1{margin:0 0 8px;max-width:20ch;color:#fff;background:linear-gradient(90deg,#ff3b3b,#ff9a3b,#ffe63b,#4ee05a,#3bd9e0,#3b82ff,#8b5cff,#ff5ccf,#ff3b3b);background-size:100% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:rainbow 6s linear infinite}
+@keyframes rainbow{to{background-position:100% center}}
+@media (prefers-reduced-motion:reduce){.hero h1{animation:none}}
 .hero p.sub{color:#ffd166;margin:0;max-width:34ch}
 .tabs{display:flex;gap:8px;margin:0 0 16px}
 .tabs button{flex:1;font:inherit;font-weight:700;color:var(--muted);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
