@@ -74,6 +74,53 @@ li:first-child .pos{color:var(--gold)}
 .menu li{flex-wrap:wrap}
 .menu .thumb{width:100%;order:3}
 .menu .info{flex:1 1 60%}
+.mplayer{background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:14px 14px 12px;margin:0 0 12px;text-align:center}
+.mstage{position:relative;height:156px;overflow:hidden;transition:height .3s}
+.mplayer.spec .mstage{height:224px}
+.mcanvas{position:absolute;left:50%;top:50%;width:224px;height:224px;margin:-112px 0 0 -112px;opacity:0;transition:opacity .3s;pointer-events:none}
+.mplayer.spec .mcanvas{opacity:1}
+.mdisc{position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-66px 0 0 -66px}
+.mdisc i{position:relative;display:block;width:100%;height:100%;border-radius:50%;box-shadow:0 3px 10px rgba(0,0,0,.28);animation:spin 6s linear infinite;animation-play-state:paused;
+  background:radial-gradient(circle,var(--surface) 0 8%,rgba(0,0,0,.18) 8% 10%,var(--accent) 10% 30%,transparent 30%),
+  conic-gradient(#eceaf8,#9fb4ff,#f6c8ee,#eceaf8,#a8f0d8,#fff1b0,#eceaf8,#b9a8ff,#eceaf8)}
+.mplayer.playing .mdisc i{animation-play-state:running}
+.mdisc i b{position:absolute;left:46%;top:46%;width:8%;height:8%;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px rgba(0,0,0,.45)}
+.mtitle{font-weight:700;font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.martist{color:var(--muted);font-size:14px;min-height:21px}
+.mplayer input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;padding:0;margin:6px 0 0;border:0;border-radius:0;background:transparent;cursor:pointer}
+.mplayer input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accent) var(--p,0%),var(--line) var(--p,0%))}
+.mplayer input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-5px;border-radius:50%;background:var(--accent);border:2px solid var(--surface)}
+.mplayer input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--line)}
+.mplayer input[type=range]::-moz-range-progress{height:6px;border-radius:3px;background:var(--accent)}
+.mplayer input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--surface)}
+.mtimes{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:0 0 10px;font-variant-numeric:tabular-nums}
+.mctrl{display:flex;justify-content:center;align-items:center;gap:16px}
+.mctrl button{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
+.mctrl button.main{width:56px;height:56px;background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.28)}
+.mctrl button:active{transform:translateY(3px);box-shadow:0 0 0 transparent}
+.menu li.trk{flex-wrap:nowrap;gap:12px;padding:8px 10px;cursor:pointer}
+.trk.active{border-color:var(--accent)}
+.trk.active .name{color:var(--accent)}
+.trk.noaudio{opacity:.65;cursor:default}
+.tart{flex:none;width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--line);display:block}
+.tinfo{min-width:0;flex:1}
+.trk .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trk .by{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlisten{flex:none;font-size:12px;font-weight:700;color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:1px 8px;text-decoration:none}
+.eq{display:none;align-items:flex-end;gap:2px;height:16px;width:18px;flex:none}
+.eq i{display:block;width:4px;height:4px;background:var(--accent);border-radius:2px;animation:eq .9s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.3s}
+.eq i:nth-child(3){animation-delay:-.6s}
+.trk.now .eq{display:inline-flex}
+@keyframes eq{0%,100%{height:4px}50%{height:16px}}
+.mini{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(420px,calc(100vw - 28px));transform:translate(-50%,160%);visibility:hidden;transition:transform .3s,visibility 0s .3s;z-index:15;display:flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:6px 8px;box-shadow:0 6px 20px rgba(0,0,0,.25);overflow:hidden}
+.mini.show{transform:translate(-50%,0);visibility:visible;transition:transform .3s}
+.mini::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--accent)}
+.mini-info{flex:1;min-width:0;text-align:left;background:none;border:0;color:inherit;font:inherit;font-weight:700;padding:8px 6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini button.ic{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:var(--accent);color:#fff;display:grid;place-items:center;cursor:pointer}
+.mini button.ic.x{background:transparent;color:var(--muted);font-size:24px;line-height:1}
+body.has-mini .wrap{padding-bottom:110px}
+@media (prefers-reduced-motion:reduce){.mdisc i,.eq i{animation:none}}
 .tabs{display:flex;gap:8px;margin:0 0 16px}
 .tabs button{flex:1;font:inherit;font-weight:700;color:var(--muted);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
 .tabs button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
@@ -120,6 +167,21 @@ li.playing .info{padding-right:96px}
 <aside id="menu" class="menu" aria-hidden="true" aria-label="Settings">
   <div class="menu-head"><h2 data-t="menu">Menu</h2><button type="button" id="menuClose" class="menu-close" aria-label="Close">&times;</button></div>
   <h3 data-t="tabMusic">Music</h3>
+  <div class="mplayer" id="mplayer">
+    <div class="mstage">
+      <canvas class="mcanvas" id="mcanvas"></canvas>
+      <div class="mdisc" aria-hidden="true"><i><img class="disc-art" id="mart" alt="" onerror="this.style.display='none'"><img class="disc-label" id="mlabel" alt="" style="display:none" onerror="this.style.display='none'"><b></b></i></div>
+    </div>
+    <div class="mtitle" id="mTitle"></div>
+    <div class="martist" id="mArtist"></div>
+    <input type="range" id="mSeek" min="0" max="1000" value="0" step="1">
+    <div class="mtimes"><span id="mCur">0:00</span><span id="mDur">0:00</span></div>
+    <div class="mctrl">
+      <button type="button" id="mPrev"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6h2v12H6zM9.5 12L19 6v12z" fill="currentColor"/></svg></button>
+      <button type="button" id="mPlay" class="main"></button>
+      <button type="button" id="mNext"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M16 6h2v12h-2zM5 6v12l9.5-6z" fill="currentColor"/></svg></button>
+    </div>
+  </div>
   <ol id="musicList"></ol>
   <h3 data-t="settings">Settings</h3>
     <label><span data-t="language">Language</span>
@@ -137,6 +199,11 @@ li.playing .info{padding-right:96px}
         <option value="emerald" data-t="emerald">Emerald</option>
       </select></label>
 </aside>
+<div id="mini" class="mini" role="region">
+  <button type="button" id="miniOpen" class="mini-info"><span id="miniTitle"></span></button>
+  <button type="button" id="miniPlay" class="ic"></button>
+  <button type="button" id="miniStop" class="ic x">&times;</button>
+</div>
 <script src="lists.js"></script>
 <script src="musiclist.js"></script>
 <script>
@@ -187,14 +254,16 @@ const TEXT = {
         thumbAlt:"Thumbnail of", none:"No levels match.",
         tabLevels:"Levels", tabMusic:"Music", subMusic:"Songs from Dancing Line Fanmade Levels", listen:"Listen",
         viz:"Preview style", vizDisc:"Disc", vizSpectro:"Spectrogram",
-        settings:"Settings", pages:"Pages", prefs:"Preferences", menu:"Menu", close:"Close", noMusic:"No songs yet." },
+        settings:"Settings", pages:"Pages", prefs:"Preferences", menu:"Menu", close:"Close", noMusic:"No songs yet.",
+        chooseSong:"Choose a song", prevLbl:"Previous song", nextLbl:"Next song", playLbl:"Play", pauseLbl:"Pause", seekLbl:"Seek", closePlayer:"Close player", nowPlaying:"Now playing" },
   vi: { language:"Ngôn ngữ", theme:"Giao diện", amethyst:"Thạch anh tím", default:"Mặc định", dark:"Tối", emerald:"Ngọc lục bảo",
         title:"Danh sách các Level Dancing Line do Fan làm", sub:"Một danh sách cho các Level Dancing Line do Fan Làm",
         search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", noAudio:"Không tìm thấy âm thanh",
         thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào.",
         tabLevels:"Level", tabMusic:"Nhạc", subMusic:"Các Bài Nhạc của các Level Dancing Line do Fan Làm", listen:"Nghe",
         viz:"Kiểu xem trước", vizDisc:"Đĩa", vizSpectro:"Phổ âm thanh",
-        settings:"Cài đặt", pages:"Trang", prefs:"Tùy chọn", menu:"Menu", close:"Đóng", noMusic:"Chưa có bài nhạc nào." }
+        settings:"Cài đặt", pages:"Trang", prefs:"Tùy chọn", menu:"Menu", close:"Đóng", noMusic:"Chưa có bài nhạc nào.",
+        chooseSong:"Chọn một bài", prevLbl:"Bài trước", nextLbl:"Bài sau", playLbl:"Phát", pauseLbl:"Tạm dừng", seekLbl:"Tua", closePlayer:"Đóng trình phát", nowPlaying:"Đang phát" }
 };
 
 /* ===== Nothing below needs editing ===== */
@@ -239,13 +308,20 @@ function rowHtml(l, i, set){
               + (l.music && !ytId(l.music) ? `<button type="button" class="music" data-set="${set}" data-i="${i}" aria-pressed="false">&#9654; ${esc(x.music)}</button>` : "");
   return `<li>${set === "music" ? "" : `<span class="pos">${i+1}</span>`}${img}<div class="info"><p class="name">${esc(l.name)}</p><div class="by">${esc(x.by)} ${esc(l.creator)}</div><div class="links">${links}</div></div></li>`;
 }
+function trackHtml(l, i){
+  const x = T(), th = thumbOf(l), ok = !!(l.music && !ytId(l.music));
+  const art = th ? `<img class="tart" src="${esc(th)}" alt="" loading="eager" onerror="this.style.display='none'">` : `<div class="tart"></div>`;
+  const listen = isUrl(l.showcase) ? `<a class="tlisten" href="${esc(l.showcase)}" target="_blank" rel="noopener">${esc(x.listen)}</a>` : "";
+  return `<li class="trk${ok ? "" : " noaudio"}" data-i="${i}"${ok ? ' role="button" tabindex="0"' : ""}>${art}<div class="tinfo"><p class="name">${esc(l.name)}</p><div class="by">${esc(l.creator)}</div></div>${listen}<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></li>`;
+}
 function render(){
   stopMusic();
   const t = q.value.trim().toLowerCase(), x = T();
   const rows = LEVELS.map((l,i) => ({l,i}))
     .filter(({l}) => !t || (l.name + " " + l.creator).toLowerCase().includes(t));
   list.innerHTML = rows.length ? rows.map(({l,i}) => rowHtml(l,i,"levels")).join("") : `<li class="empty">${esc(x.none)}</li>`;
-  musicListEl.innerHTML = MUSICS.length ? MUSICS.map((l,i) => rowHtml(l,i,"music")).join("") : `<li class="empty">${esc(x.noMusic)}</li>`;
+  musicListEl.innerHTML = MUSICS.length ? MUSICS.map((l,i) => trackHtml(l,i)).join("") : `<li class="empty">${esc(x.noMusic)}</li>`;
+  paintPlayer();
 }
 const DISC_IMAGE = "disc.png"; // your own disc picture, e.g. "disc.png" (put it in your repo)
 const FADE_IN = 1, FADE_OUT = 1.5; // fade lengths in seconds, change if you like
@@ -326,6 +402,7 @@ document.addEventListener("click", e => {
   const wasOn = b === curBtn;
   stopMusic();
   if (wasOn) return;
+  playerPause();
   const l = SETS[b.dataset.set][b.dataset.i];
   const start = Math.max(0, parseInt(l.musicStart, 10) || 0);
   let end = parseInt(l.musicEnd, 10);
@@ -365,6 +442,220 @@ document.addEventListener("click", e => {
   });
   a.play().catch(() => { if (audio === a) a.dispatchEvent(new Event("error")); });
 });
+/* ===== MUSIC PLAYER (lives in the menu, keeps playing when the menu is closed) ===== */
+const byId = id => document.getElementById(id);
+const P = { box:byId("mplayer"), canvas:byId("mcanvas"), art:byId("mart"), label:byId("mlabel"), title:byId("mTitle"), artist:byId("mArtist"),
+  seek:byId("mSeek"), cur:byId("mCur"), dur:byId("mDur"), prev:byId("mPrev"), play:byId("mPlay"), next:byId("mNext"),
+  mini:byId("mini"), miniOpen:byId("miniOpen"), miniTitle:byId("miniTitle"), miniPlay:byId("miniPlay"), miniStop:byId("miniStop") };
+P.art.src = DISC_IMAGE;
+const ICON = {
+  play:'<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
+  pause:'<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg>'
+};
+let pIdx = -1, pAudio = null, pStart = 0, pLen = 15, pPlaying = false, pDragging = false, pError = false, pRaf = 0, pGraph = null, pDraw = null;
+const fmt = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const playableIds = () => MUSICS.map((l, i) => i).filter(i => MUSICS[i].music && !ytId(MUSICS[i].music));
+function clipOf(l){
+  const start = Math.max(0, parseInt(l.musicStart, 10) || 0);
+  let end = parseInt(l.musicEnd, 10);
+  if (!(end > start)) end = start + 15;
+  return { start, len: end - start };
+}
+function setSeek(frac){
+  const pct = Math.max(0, Math.min(1, frac)) * 100;
+  P.seek.value = Math.round(pct * 10);
+  P.seek.style.setProperty("--p", pct + "%");
+  P.mini.style.setProperty("--p", pct + "%");
+}
+function updateMini(){
+  const show = pIdx >= 0 && !menuEl.classList.contains("open");
+  P.mini.classList.toggle("show", show);
+  document.body.classList.toggle("has-mini", show);
+}
+function paintPlayer(){
+  const x = T(), l = pIdx >= 0 ? MUSICS[pIdx] : null;
+  P.box.classList.toggle("playing", pPlaying);
+  P.box.classList.toggle("spec", viz === "spectro" && (!l || !!pDraw));
+  P.title.textContent = l ? l.name : x.chooseSong;
+  P.artist.textContent = pError ? x.noAudio : (l ? l.creator : "");
+  P.miniTitle.textContent = l ? l.name : "";
+  P.seek.setAttribute("aria-label", x.seekLbl);
+  P.prev.setAttribute("aria-label", x.prevLbl);
+  P.next.setAttribute("aria-label", x.nextLbl);
+  P.mini.setAttribute("aria-label", x.nowPlaying);
+  P.miniOpen.setAttribute("aria-label", x.nowPlaying);
+  P.miniStop.setAttribute("aria-label", x.closePlayer);
+  const lbl = pPlaying ? x.pauseLbl : x.playLbl, ico = pPlaying ? ICON.pause : ICON.play;
+  P.play.setAttribute("aria-label", lbl); P.miniPlay.setAttribute("aria-label", lbl);
+  P.play.innerHTML = ico; P.miniPlay.innerHTML = ico;
+  const art = l ? thumbOf(l) : "";
+  if (P.label.dataset.src !== art) {
+    P.label.dataset.src = art;
+    if (art) { P.label.src = art; P.label.style.display = ""; } else { P.label.style.display = "none"; }
+  }
+  musicListEl.querySelectorAll("li.trk").forEach(li => {
+    const on = +li.dataset.i === pIdx;
+    li.classList.toggle("active", on);
+    li.classList.toggle("now", on && pPlaying);
+  });
+  try { if ("mediaSession" in navigator) navigator.mediaSession.playbackState = pIdx < 0 ? "none" : (pPlaying ? "playing" : "paused"); } catch(e) {}
+  updateMini();
+}
+function makeRadial(an){
+  const cv = P.canvas, S = 224, c = S / 2, dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = S * dpr; cv.height = S * dpr;
+  const ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const color = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#e2407f";
+  const buf = new Uint8Array(an.frequencyBinCount), n = 56, r0 = 72, span = 36;
+  ctx.lineWidth = 3; ctx.lineCap = "round";
+  return () => {
+    an.getByteFrequencyData(buf);
+    ctx.clearRect(0, 0, S, S);
+    ctx.strokeStyle = color;
+    for (let i = 0; i < n; i++) {
+      const k = i < n / 2 ? i : n - 1 - i;
+      const bin = Math.min(buf.length - 1, Math.floor(Math.pow(k / (n / 2), 1.5) * buf.length * 0.7));
+      const h = 3 + buf[bin] / 255 * span, ang = i / n * Math.PI * 2 - Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(c + Math.cos(ang) * r0, c + Math.sin(ang) * r0);
+      ctx.lineTo(c + Math.cos(ang) * (r0 + h), c + Math.sin(ang) * (r0 + h));
+      ctx.stroke();
+    }
+  };
+}
+function ensureGraph(){
+  if (!pAudio || pGraph || viz !== "spectro" || !canAnalyse(MUSICS[pIdx].music)) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === "suspended") actx.resume();
+    const src = actx.createMediaElementSource(pAudio), an = actx.createAnalyser();
+    an.fftSize = 256; an.smoothingTimeConstant = 0.78;
+    src.connect(an); an.connect(actx.destination);
+    pGraph = { src, an }; pDraw = makeRadial(an);
+  } catch(e) { pGraph = null; pDraw = null; }
+}
+function pCleanup(){
+  cancelAnimationFrame(pRaf); pRaf = 0;
+  const a = pAudio; pAudio = null; pPlaying = false;
+  if (a) a.pause();
+  if (pGraph) { try { pGraph.src.disconnect(); pGraph.an.disconnect(); } catch(e) {} }
+  pGraph = null; pDraw = null;
+  const c = P.canvas.getContext && P.canvas.getContext("2d");
+  if (c) { c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, P.canvas.width, P.canvas.height); }
+}
+function loop(){
+  pRaf = 0;
+  const a = pAudio;
+  if (!a) return;
+  const t = Math.max(0, a.currentTime - pStart);
+  if (t >= pLen) { pNext(1); return; }
+  const fi = Math.min(FADE_IN, pLen / 2), fo = Math.min(FADE_OUT, pLen / 2);
+  a.volume = Math.max(0, Math.min(1, t / fi, (pLen - t) / fo));
+  if (!pDragging) { setSeek(t / pLen); P.cur.textContent = fmt(t); }
+  if (viz === "spectro" && pDraw) pDraw();
+  if (!a.paused) pRaf = requestAnimationFrame(loop);
+}
+function startLoop(){ if (!pRaf) pRaf = requestAnimationFrame(loop); }
+function playTrack(i){
+  const l = MUSICS[i];
+  if (!l || !l.music || ytId(l.music)) return;
+  stopMusic();
+  pCleanup();
+  const { start, len } = clipOf(l);
+  const a = new Audio(l.music + "#t=" + start);
+  a.volume = 0;
+  pAudio = a; pIdx = i; pStart = start; pLen = len; pPlaying = true; pError = false; pDragging = false;
+  setSeek(0); P.cur.textContent = "0:00"; P.dur.textContent = fmt(len);
+  ensureGraph();
+  paintPlayer();
+  try {
+    if ("mediaSession" in navigator) {
+      const art = thumbOf(l);
+      navigator.mediaSession.metadata = new MediaMetadata({ title: l.name, artist: l.creator, artwork: art ? [{ src: new URL(art, location.href).href }] : [] });
+    }
+  } catch(e) {}
+  a.addEventListener("playing", () => {
+    if (pAudio !== a) return;
+    if (a.currentTime < start - 0.5) a.currentTime = start;
+    pPlaying = true; paintPlayer(); startLoop();
+  });
+  a.addEventListener("pause", () => { if (pAudio === a && !a.ended) { pPlaying = false; paintPlayer(); } });
+  a.addEventListener("seeked", () => {
+    if (pAudio !== a || !a.paused) return;
+    const t = Math.max(0, a.currentTime - start);
+    if (!pDragging) { setSeek(t / len); P.cur.textContent = fmt(t); }
+  });
+  a.addEventListener("timeupdate", () => { if (pAudio === a && a.currentTime - start >= len) pNext(1); });
+  a.addEventListener("ended", () => { if (pAudio === a) pNext(1); });
+  a.addEventListener("error", () => { if (pAudio === a) { pError = true; pPlaying = false; paintPlayer(); } });
+  a.play().catch(() => { if (pAudio === a) { pError = true; pPlaying = false; paintPlayer(); } });
+}
+function pNext(dir){
+  if (dir < 0 && pAudio && pAudio.currentTime - pStart > 3) { pAudio.currentTime = pStart; return; }
+  const ids = playableIds();
+  if (!ids.length) return;
+  const pos = ids.indexOf(pIdx);
+  const n = pos < 0 ? (dir > 0 ? 0 : ids.length - 1) : (pos + dir + ids.length) % ids.length;
+  playTrack(ids[n]);
+}
+function togglePlay(){
+  if (!pAudio || pError) {
+    const ids = playableIds();
+    if (pError && pIdx >= 0) playTrack(pIdx); else if (ids.length) playTrack(ids[0]);
+    return;
+  }
+  if (pAudio.paused) {
+    stopMusic();
+    if (actx && actx.state === "suspended") actx.resume();
+    pAudio.play().catch(() => {});
+  } else pAudio.pause();
+}
+function playerPause(){ if (pAudio && !pAudio.paused) pAudio.pause(); }
+function pStop(){
+  pCleanup(); pIdx = -1; pError = false;
+  setSeek(0); P.cur.textContent = "0:00"; P.dur.textContent = "0:00";
+  paintPlayer();
+}
+function playerVizChanged(){ if (pAudio) ensureGraph(); paintPlayer(); }
+P.play.addEventListener("click", togglePlay);
+P.miniPlay.addEventListener("click", togglePlay);
+P.next.addEventListener("click", () => pNext(1));
+P.prev.addEventListener("click", () => pNext(-1));
+P.miniStop.addEventListener("click", pStop);
+P.miniOpen.addEventListener("click", () => openMenu());
+P.seek.addEventListener("input", () => {
+  pDragging = true;
+  const v = +P.seek.value;
+  P.seek.style.setProperty("--p", v / 10 + "%");
+  P.cur.textContent = fmt(v / 1000 * pLen);
+});
+P.seek.addEventListener("change", () => {
+  if (pAudio) pAudio.currentTime = pStart + (+P.seek.value) / 1000 * pLen;
+  pDragging = false;
+});
+musicListEl.addEventListener("click", e => {
+  if (e.target.closest("a")) return;
+  const li = e.target.closest("li.trk");
+  if (!li || li.classList.contains("noaudio")) return;
+  const i = +li.dataset.i;
+  if (i === pIdx && pAudio && !pError) togglePlay(); else playTrack(i);
+});
+musicListEl.addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const li = e.target.closest("li.trk");
+  if (!li || li.classList.contains("noaudio")) return;
+  e.preventDefault();
+  li.click();
+});
+try {
+  if ("mediaSession" in navigator) {
+    const ms = navigator.mediaSession;
+    ms.setActionHandler("play", () => { if (!pAudio || pAudio.paused) togglePlay(); });
+    ms.setActionHandler("pause", () => { if (pAudio && !pAudio.paused) togglePlay(); });
+    ms.setActionHandler("previoustrack", () => pNext(-1));
+    ms.setActionHandler("nexttrack", () => pNext(1));
+  }
+} catch(e) {}
 function setLang(v){
   lang = TEXT[v] ? v : "en";
   document.documentElement.lang = lang;
@@ -389,13 +680,14 @@ function setTheme(v){
 langSel.addEventListener("change", () => setLang(langSel.value));
 themeSel.addEventListener("change", () => setTheme(themeSel.value));
 vizSel.value = viz;
-vizSel.addEventListener("change", () => { viz = vizSel.value === "spectro" ? "spectro" : "disc"; store.set("dl-viz", viz); });
+vizSel.addEventListener("change", () => { viz = vizSel.value === "spectro" ? "spectro" : "disc"; store.set("dl-viz", viz); playerVizChanged(); });
 q.addEventListener("input", render);
 const menuEl = document.getElementById("menu"), scrim = document.getElementById("scrim");
 const menuBtn = document.getElementById("menuBtn"), menuClose = document.getElementById("menuClose");
 function openMenu(){
   menuEl.classList.add("open"); scrim.classList.add("open");
   menuEl.setAttribute("aria-hidden","false"); menuBtn.setAttribute("aria-expanded","true");
+  updateMini();
   menuClose.focus();
 }
 function closeMenu(){
@@ -403,6 +695,7 @@ function closeMenu(){
   if (curLi && menuEl.contains(curLi)) stopMusic();
   menuEl.classList.remove("open"); scrim.classList.remove("open");
   menuEl.setAttribute("aria-hidden","true"); menuBtn.setAttribute("aria-expanded","false");
+  updateMini();
   menuBtn.focus();
 }
 menuBtn.addEventListener("click", () => menuEl.classList.contains("open") ? closeMenu() : openMenu());
