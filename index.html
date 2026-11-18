@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Ranking Dancing Line Fanmade Levels by difficulty">
+<meta name="description" content="A List for Dancing Line Fanmade Levels">
 <meta name="theme-color" content="#1d1a4a">
 <link rel="icon" href="icon.jpg" type="image/jpg">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dancing Line Fanmade Level Lists">
 <meta property="og:title" content="Dancing Line Fanmade Level Lists">
-<meta property="og:description" content="Ranking Dancing Line Fanmade Levels by difficulty">
+<meta property="og:description" content="Level Lists for Fanmade Levels of Dancing Line">
 <meta property="og:url" content="https://dlfllists.github.io/">
 <meta property="og:image" content="https://dlfllists.github.io/banner.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
 <meta property="og:image:alt" content="Dancing Line Fanmade Level Lists banner">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dancing Line Fanmade Level Lists">
-<meta name="twitter:description" content="Ranking Dancing Line fanmade levels and music by difficulty.">
+<meta name="twitter:description" content="Dancing Line Level Lists for Fanmade Levels">
 <meta name="twitter:image" content="https://dlfllists.github.io/banner.jpg">
 <title>Dancing Line Fanmade Level Lists</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap&subset=vietnamese,latin-ext" rel="stylesheet">
@@ -52,7 +52,7 @@ li:first-child .pos{color:var(--gold)}
 .name{font-weight:700;margin:0;overflow-wrap:anywhere}
 .by{color:var(--muted);font-size:14px}
 .hero{background:#1d1a4a url(header-bg.jpg) right center/cover no-repeat;border-radius:18px;padding:30px 22px 34px;margin:0 0 18px;box-shadow:0 4px 0 var(--line)}
-.hero h1{color:#ff7ab8;margin:0 0 8px;max-width:20ch}
+.hero h1{...background:linear-gradient(90deg,#ff5e5e,#ffb347,#ffe66d,#5eead4,#60a5fa,#c084fc,#ff5e5e);...animation:rainbow 6s linear infinite}
 .hero p.sub{color:#ffd166;margin:0;max-width:34ch}
 .tabs{display:flex;gap:8px;margin:0 0 16px}
 .tabs button{flex:1;font:inherit;font-weight:700;color:var(--muted);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
@@ -104,7 +104,7 @@ li.playing .info{padding-right:96px}
   </div>
   <header class="hero">
   <h1 data-t="title">Dancing Line Fanmade Level Lists</h1>
-  <p class="sub" id="sub">Ranking Dancing Line Levels by difficulty</p>
+  <p class="sub" id="sub">A list for Dancing Line Fanmade Levels</p>
   </header>
   <div class="tabs" role="tablist">
     <button type="button" role="tab" data-tab="levels" data-t="tabLevels" aria-selected="true">Levels</button>
@@ -158,16 +158,16 @@ const MUSIC_INFO = {
 /* ===== TEXT IN EACH LANGUAGE (add more languages here later) ===== */
 const TEXT = {
   en: { language:"Language", theme:"Theme", amethyst:"Amethyst", default:"Default", dark:"Dark", emerald:"Emerald",
-        title:"Dancing Line Fanmade Level Lists", sub:"Ranking Dancing Line Levels by difficulty",
+        title:"Dancing Line Fanmade Level Lists", sub:"A List for Dancing Line Fanmade Levels",
         search:"Search levels", by:"by", showcase:"Showcase", play:"Play", noThumb:"No thumbnail", music:"Preview", stop:"Stop", noAudio:"Audio not found",
         thumbAlt:"Thumbnail of", none:"No levels match.",
-        tabLevels:"Levels", tabMusic:"Music", subMusic:"Ranking songs from Dancing Line fanmade levels", listen:"Listen",
+        tabLevels:"Levels", tabMusic:"Music", subMusic:"Songs from Dancing Line Fanmade Levels", listen:"Listen",
         viz:"Preview style", vizDisc:"Disc", vizSpectro:"Spectrogram" },
   vi: { language:"Ngôn ngữ", theme:"Giao diện", amethyst:"Thạch anh tím", default:"Mặc định", dark:"Tối", emerald:"Ngọc lục bảo",
-        title:"Danh sách Level Dancing Line do fan làm", sub:"Xếp hạng các level Dancing Line theo độ khó",
+        title:"Danh sách các Level Dancing Line do Fan làm", sub:"Một danh sách cho các Level Dancing Line do Fan Làm",
         search:"Tìm level", by:"bởi", showcase:"Xem showcase", play:"Chơi", noThumb:"Không có ảnh bìa", music:"Nghe thử", stop:"Dừng", noAudio:"Không tìm thấy âm thanh",
         thumbAlt:"Ảnh bìa của", none:"Không tìm thấy level nào.",
-        tabLevels:"Level", tabMusic:"Nhạc", subMusic:"Xếp hạng các bài nhạc trong level Dancing Line do fan làm", listen:"Nghe",
+        tabLevels:"Level", tabMusic:"Nhạc", subMusic:"Các Bài Nhạc của các Level Dancing Line do Fan Làm", listen:"Nghe",
         viz:"Kiểu xem trước", vizDisc:"Đĩa", vizSpectro:"Phổ âm thanh" }
 };
 
