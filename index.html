@@ -3,6 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ranking Dancing Line fanmade levels and music by difficulty, with showcases, downloads and audio previews.">
+<meta name="theme-color" content="#1d1a4a">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<!-- LINK PREVIEW (Discord, Twitter, etc.)
+     IMPORTANT: replace https://YOURNAME.github.io/ below with your real site address (3 places). -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dancing Line Fanmade Level Lists">
+<meta property="og:title" content="Dancing Line Fanmade Level Lists">
+<meta property="og:description" content="Ranking Dancing Line fanmade levels and music by difficulty, with showcases, downloads and audio previews.">
+<meta property="og:url" content="https://YOURNAME.github.io/">
+<meta property="og:image" content="https://YOURNAME.github.io/banner.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dancing Line Fanmade Level Lists banner">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dancing Line Fanmade Level Lists">
+<meta name="twitter:description" content="Ranking Dancing Line fanmade levels and music by difficulty.">
+<meta name="twitter:image" content="https://YOURNAME.github.io/banner.png">
 <title>Dancing Line Fanmade Level Lists</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;600;700&display=swap&subset=vietnamese,latin-ext" rel="stylesheet">
 <style>
@@ -30,6 +51,9 @@ li:first-child .pos{color:var(--gold)}
 .info{min-width:0;flex:1}
 .name{font-weight:700;margin:0;overflow-wrap:anywhere}
 .by{color:var(--muted);font-size:14px}
+.hero{background:#1d1a4a url(header-bg.png) right center/cover no-repeat;border-radius:18px;padding:30px 22px 34px;margin:0 0 18px;box-shadow:0 4px 0 var(--line)}
+.hero h1{color:#fff;margin:0 0 8px;max-width:20ch}
+.hero p.sub{color:#d6d1f5;margin:0;max-width:34ch}
 .tabs{display:flex;gap:8px;margin:0 0 16px}
 .tabs button{flex:1;font:inherit;font-weight:700;color:var(--muted);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
 .tabs button[aria-selected="true"]{color:var(--accent);border-color:var(--accent)}
@@ -78,8 +102,10 @@ li.playing .info{padding-right:96px}
         <option value="emerald" data-t="emerald">Emerald</option>
       </select></label>
   </div>
+  <header class="hero">
   <h1 data-t="title">Dancing Line Fanmade Level Lists</h1>
   <p class="sub" id="sub">Ranking Dancing Line Levels by difficulty</p>
+  </header>
   <div class="tabs" role="tablist">
     <button type="button" role="tab" data-tab="levels" data-t="tabLevels" aria-selected="true">Levels</button>
     <button type="button" role="tab" data-tab="music" data-t="tabMusic" aria-selected="false">Music</button>
